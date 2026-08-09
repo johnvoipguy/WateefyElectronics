@@ -157,8 +157,6 @@ jobs:
                 core.info(`Updated destination release ${dstTag}`);
               }
 
-              // Prepare upload endpoint
-              const uploadUrl = dstRelease.data.upload_url.replace('{?name,label}', '');
               const tmpDir = path.join(process.env.RUNNER_TEMP || '/tmp', `mirror-${Date.now()}-${Math.random().toString(16).slice(2)}`);
               fs.mkdirSync(tmpDir, { recursive: true });
 
@@ -193,13 +191,16 @@ jobs:
                 const data = fs.readFileSync(filePath);
 
                 core.info(`Uploading asset: ${assetName} (${stat.size} bytes)`);
-                await github.request(`POST ${uploadUrl}`, {
+                await github.rest.repos.uploadReleaseAsset({
+                  owner: dstOwner,
+                  repo: dstRepo,
+                  release_id: dstRelease.data.id,
+                  name: assetName,
+                  data,
                   headers: {
                     'content-type': asset.content_type || 'application/octet-stream',
                     'content-length': stat.size
-                  },
-                  name: assetName,
-                  data
+                  }
                 });
               }
 
