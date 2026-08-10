@@ -22,10 +22,17 @@ This is a custom WLED build for the **Waveshare ESP32-S3-ETH** board with W5500 
 
 **📥 Download Latest Firmware:**
 
-| File | Description | Use Case |
-|------|-------------|----------|
-| [**WLED_Waveshare_ESP32-S3-ETH_v1.0_DualInterface_FULL.bin**](https://github.com/johnvoipguy/wled-custom-builds/raw/waveshare-esp32s3-eth-v15.1/firmware/WLED_Waveshare_ESP32-S3-ETH_v1.0_DualInterface_20251109_FULL.bin) ⭐ **RECOMMENDED** | Complete image with bootloader + partitions + firmware<br>Flash to address `0x0`<br>Size: ~1.5MB | **First-time setup**<br>Recovery/Complete reflash |
-| [**WLED_Waveshare_ESP32-S3-ETH_v1.0_DualInterface_OTA.bin**](https://github.com/johnvoipguy/wled-custom-builds/raw/waveshare-esp32s3-eth-v15.1/firmware/WLED_Waveshare_ESP32-S3-ETH_v1.0_DualInterface_20251109_OTA.bin) | Application only<br>Flash to address `0x10000`<br>Size: ~1.4MB | **Updates**<br>Preserves settings |
+- Wrong network behavior or missing Ethernet: verify you flashed the Waveshare target build.
+- OTA failures: flash `.full.bin` over UART and retry setup.
+ 
+Latest:
+- [waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb (mirrored)](https://github.com/johnvoipguy/WateefyElectronics/releases/tag/mirror-waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb)
+
+Recent builds:
+- [waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb (mirrored)](https://github.com/johnvoipguy/WateefyElectronics/releases/tag/mirror-waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb)
+
+All releases:
+https://github.com/johnvoipguy/WateefyElectronics/releases
 
 **⚡ Flash Command:**
 ```bash
@@ -36,11 +43,12 @@ esptool.py --chip esp32s3 --port COM3 --baud 921600 \
 
 See [detailed instructions below](#flashing-instructions) for more options.
 
+- If you prefer web-based flasher:  [ESPConnect](https://thelastoutpostworkshop.github.io/ESPConnect/)
+
 ### Hardware Configuration
 - **Board**: Waveshare ESP32-S3-ETH (ESP32-S3, 16MB Flash, 8MB PSRAM)
 - **Ethernet**: W5500 SPI Ethernet (pins: MISO=12, MOSI=11, SCLK=13, CS=14, RST=9, INT=10)
-- **LED Outputs**: 8 channels configured (GPIO 48, 47, 38, 39, 40, 41, 42, 1)
-- **AudioReactive**: I2S microphone on GPIO 4
+- **LED Outputs**: 8 channels configured (GPIO 0, 1, 2, 3, 15, 18, 16, 17)
 - **Features**: MQTT, AudioReactive usermod enabled
 
 ### Flashing Instructions
