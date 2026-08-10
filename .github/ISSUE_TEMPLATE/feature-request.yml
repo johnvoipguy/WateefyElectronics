@@ -1,0 +1,50 @@
+name: Feature Request
+description: Suggest an improvement for hardware docs, workflow, or support content.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - Hardware (NODE Mini / Backbone / Flex)
+        - Documentation
+        - Firmware profile/config
+        - Repo/process
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem are you trying to solve?
+      placeholder: "Describe the pain point."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      placeholder: "Describe what you want to happen."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      placeholder: "What have you tried already?"
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      placeholder: "Mockups, links, constraints, tradeoffs, etc."
+    validations:
+      required: false

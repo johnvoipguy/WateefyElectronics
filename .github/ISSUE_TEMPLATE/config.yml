@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions / Test Reports
+    url: https://github.com/johnvoipguy/WateefyElectronics/issues/new?template=question-test-report.yml
+    about: Use the structured Question / Test Report form for model/test/result/concern submissions.
+    

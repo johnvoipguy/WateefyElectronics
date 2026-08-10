@@ -1,0 +1,99 @@
+name: Question / Test Report
+description: Ask a question or report a model/test result with issues and concerns.
+title: "[Question/Test]: "
+labels: ["question"]
+body:
+  - type: dropdown
+    id: model
+    attributes:
+      label: Model
+      description: Which NODE model is this about?
+      options:
+        - NODE Mini V1a
+        - NODE Backbone V1a
+        - NODE Flex V1a
+        - Other / Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: firmware
+    attributes:
+      label: Firmware / Build
+      description: WLED/ESPHome/ESPixelStick version, build date, or commit hash
+      placeholder: "e.g., WLED 0.15.0-b4"
+    validations:
+      required: false
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Power input, install type, indoor/outdoor, etc.
+      placeholder: "e.g., 24V input, outdoor enclosure, 2x 5m WS2815 runs"
+    validations:
+      required: false
+
+  - type: textarea
+    id: test
+    attributes:
+      label: Test performed
+      description: What did you test?
+      placeholder: "Describe the test setup and steps."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_result
+    attributes:
+      label: Expected result
+      placeholder: "What should have happened?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_result
+    attributes:
+      label: Actual result
+      placeholder: "What actually happened?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: Issue observed
+      description: Error/failure/undesired behavior
+      placeholder: "Describe the issue clearly."
+    validations:
+      required: false
+
+  - type: textarea
+    id: concern
+    attributes:
+      label: Concern / Risk
+      description: Safety, reliability, thermal, wiring, long-term concerns, etc.
+      placeholder: "What are you worried about?"
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs / Photos / Evidence
+      description: Paste logs and add links/photos
+      placeholder: "Attach photos, scope captures, logs, screenshots."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Quick checklist
+      options:
+        - label: I searched existing issues first
+          required: false
+        - label: I included model + test setup details
+          required: false
+        - label: I can reproduce this consistently
+          required: false
