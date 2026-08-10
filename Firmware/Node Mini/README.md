@@ -1,11 +1,6 @@
 # Node Mini Firmware (XIAO)
 This page is the quick user entrypoint for Seeed Xiao ESP32S3 firmware in this repo.
 
-## Get firmware
-
-1. Open releases: https://github.com/johnvoipguy/wled-custom-builds/releases
-2. Download the Seeed Xiao ESP32S3 asset for your target line.
-
 ## Which file should I flash?
 
 - `.app.bin` for OTA updates on an already-running device.
