@@ -1,5 +1,4 @@
-# Seeed Xiao ESP32S3 firmware guide
-
+# Node Mini Firmware (XIAO)
 This page is the quick user entrypoint for Seeed Xiao ESP32S3 firmware in this repo.
 
 ## Get firmware
@@ -25,8 +24,6 @@ esptool.py --chip esp32s3 write_flash 0x0000 <your-file>.full.bin
 ```
 
 ## Known-good preserved legacy assets
-
-# Node Mini Firmware (XIAO)
 
 Latest:
 - [seeed-xiao-esp32s3-v16-seeed_xiao_esp32s3v2-e1ca36c (mirrored)](https://github.com/johnvoipguy/WateefyElectronics/releases/tag/mirror-seeed-xiao-esp32s3-v16-seeed_xiao_esp32s3v2-e1ca36c)
