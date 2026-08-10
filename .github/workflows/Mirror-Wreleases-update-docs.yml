@@ -1,0 +1,268 @@
+name: Mirror WLED releases + update download docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_releases:
+        description: "Max matching source releases to process"
+        required: true
+        default: "50"
+      title_regex:
+        description: "Case-insensitive regex for source release title"
+        required: true
+        default: "(xiao|waveshare)"
+      write_readme:
+        description: "Also update top-level README.md links section"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  mirror-and-index:
+    runs-on: ubuntu-latest
+    env:
+      SRC_OWNER: johnvoipguy
+      SRC_REPO: wled-custom-builds
+      DST_OWNER: johnvoipguy
+      DST_REPO: WateefyElectronics
+      MAX_RELEASES: ${{ github.event.inputs.max_releases }}
+      TITLE_REGEX: ${{ github.event.inputs.title_regex }}
+      WRITE_README: ${{ github.event.inputs.write_readme }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Mirror releases/assets and generate docs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const srcOwner = process.env.SRC_OWNER;
+            const srcRepo = process.env.SRC_REPO;
+            const dstOwner = process.env.DST_OWNER;
+            const dstRepo = process.env.DST_REPO;
+            const maxReleases = Number(process.env.MAX_RELEASES || "50");
+            const titleRegex = new RegExp(process.env.TITLE_REGEX || "(xiao|waveshare)", "i");
+            const writeReadme = String(process.env.WRITE_README) === "true";
+
+            core.info(`Source: ${srcOwner}/${srcRepo}`);
+            core.info(`Destination: ${dstOwner}/${dstRepo}`);
+            core.info(`Regex: ${titleRegex}`);
+            core.info(`Max releases: ${maxReleases}`);
+            core.info(`Update README.md: ${writeReadme}`);
+
+            // Verify repo access
+            await github.rest.repos.get({ owner: dstOwner, repo: dstRepo });
+
+            // Pull source releases
+            const sourceReleases = await github.paginate(
+              github.rest.repos.listReleases,
+              { owner: srcOwner, repo: srcRepo, per_page: 100 }
+            );
+
+            const candidates = sourceReleases
+              .filter(r => !r.draft)
+              .filter(r => titleRegex.test(r.name || ""))
+              .slice(0, maxReleases);
+
+            core.info(`Matched source releases: ${candidates.length}`);
+            if (candidates.length === 0) {
+              core.warning("No source releases matched. Nothing to mirror.");
+            }
+
+            // Mirror each release + assets
+            for (const src of candidates) {
+              const srcTag = src.tag_name;
+              const dstTag = `mirror-${srcTag}`;
+              const dstName = `${src.name || srcTag} (mirrored)`;
+              const body = [
+                `Mirrored from **${srcOwner}/${srcRepo}**`,
+                ``,
+                `- Source release: ${src.html_url}`,
+                `- Source tag: \`${srcTag}\``,
+                ``,
+                `---`,
+                ``,
+                src.body || "_No source release notes provided._"
+              ].join("\n");
+
+              core.info(`Processing ${src.name || srcTag} -> ${dstTag}`);
+
+              let dstRelease;
+              try {
+                const existing = await github.rest.repos.getReleaseByTag({
+                  owner: dstOwner,
+                  repo: dstRepo,
+                  tag: dstTag
+                });
+
+                dstRelease = await github.rest.repos.updateRelease({
+                  owner: dstOwner,
+                  repo: dstRepo,
+                  release_id: existing.data.id,
+                  name: dstName,
+                  body,
+                  draft: false,
+                  prerelease: src.prerelease
+                });
+
+                core.info(`Updated release ${dstTag}`);
+              } catch (e) {
+                if (e.status !== 404) throw e;
+
+                dstRelease = await github.rest.repos.createRelease({
+                  owner: dstOwner,
+                  repo: dstRepo,
+                  tag_name: dstTag,
+                  name: dstName,
+                  body,
+                  draft: false,
+                  prerelease: src.prerelease
+                });
+
+                core.info(`Created release ${dstTag}`);
+              }
+
+              const releaseId = dstRelease.data.id;
+
+              // Existing destination assets (skip duplicates on reruns)
+              const existingAssets = await github.paginate(
+                github.rest.repos.listReleaseAssets,
+                { owner: dstOwner, repo: dstRepo, release_id: releaseId, per_page: 100 }
+              );
+              const existingNames = new Set(existingAssets.map(a => a.name));
+
+              core.info(`Source assets: ${src.assets.length}`);
+              for (const a of src.assets) {
+                if (existingNames.has(a.name)) {
+                  core.info(`Skip existing asset: ${a.name}`);
+                  continue;
+                }
+
+                core.info(`Downloading: ${a.name}`);
+                const res = await fetch(a.browser_download_url, {
+                  headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
+                });
+
+                if (!res.ok) {
+                  core.warning(`Download failed for ${a.name}: HTTP ${res.status}`);
+                  continue;
+                }
+
+                const data = Buffer.from(await res.arrayBuffer());
+                if (!data.length) {
+                  core.warning(`Downloaded empty asset: ${a.name}`);
+                  continue;
+                }
+
+                core.info(`Uploading: ${a.name} (${data.length} bytes)`);
+                await github.rest.repos.uploadReleaseAsset({
+                  owner: dstOwner,
+                  repo: dstRepo,
+                  release_id: releaseId,
+                  name: a.name,
+                  data
+                });
+              }
+            }
+
+            // Build categorized list from destination mirrored releases
+            const dstReleases = (await github.paginate(
+              github.rest.repos.listReleases,
+              { owner: dstOwner, repo: dstRepo, per_page: 100 }
+            )).filter(r => !r.draft && (r.tag_name || "").startsWith("mirror-"));
+
+            const mini = dstReleases.filter(r =>
+              /(xiao|seeed-xiao)/i.test(r.name || "") || /(xiao|seeed-xiao)/i.test(r.tag_name || "")
+            );
+
+            const backbone = dstReleases.filter(r =>
+              /(waveshare)/i.test(r.name || "") || /(waveshare)/i.test(r.tag_name || "")
+            );
+
+            const latestMini = mini[0];
+            const latestBackbone = backbone[0];
+
+            const miniLines = mini.slice(0, 20).map(r => `- [${r.name || r.tag_name}](${r.html_url})`);
+            const backboneLines = backbone.slice(0, 20).map(r => `- [${r.name || r.tag_name}](${r.html_url})`);
+
+            const indexMd = `# Wateefy Firmware Download Center
+
+            This page organizes mirrored firmware from:
+            \`${srcOwner}/${srcRepo}\`
+
+            ## Node Mini (XIAO)
+
+            **Latest recommended:**  
+            ${latestMini ? `- [${latestMini.name || latestMini.tag_name}](${latestMini.html_url})` : "- _None yet_"}
+
+            **Recent Mini (XIAO) releases:**  
+            ${miniLines.length ? miniLines.join("\n") : "- _None yet_"}
+
+            ---
+
+            ## Node Backbone (Waveshare)
+
+            **Latest recommended:**  
+            ${latestBackbone ? `- [${latestBackbone.name || latestBackbone.tag_name}](${latestBackbone.html_url})` : "- _None yet_"}
+
+            **Recent Backbone (Waveshare) releases:**  
+            ${backboneLines.length ? backboneLines.join("\n") : "- _None yet_"}
+
+            ---
+
+            ## Node Pixel Controllers (XIAO/Waveshare)
+
+            Use either Mini (XIAO) or Backbone (Waveshare) firmware depending on your board.
+
+            ---
+
+            ## All releases
+            https://github.com/${dstOwner}/${dstRepo}/releases
+            `;
+
+            async function upsertFile(path, content, message) {
+              let sha;
+              try {
+                const existing = await github.rest.repos.getContent({ owner: dstOwner, repo: dstRepo, path });
+                sha = existing.data.sha;
+              } catch (e) {
+                if (e.status !== 404) throw e;
+              }
+
+              await github.rest.repos.createOrUpdateFileContents({
+                owner: dstOwner,
+                repo: dstRepo,
+                path,
+                message,
+                content: Buffer.from(content).toString("base64"),
+                sha
+              });
+              core.info(`Upserted ${path}`);
+            }
+
+            // Always update releases index
+            await upsertFile(
+              "releases/INDEX.md",
+              indexMd,
+              "docs: update firmware download index"
+            );
+
+            // Optionally update README links section
+            if (writeReadme) {
+              const readme = `## Firmware Downloads
+
+            Use this quick selector:
+
+            - **Node Mini (XIAO)** → [Go to Mini downloads](./releases/INDEX.md#node-mini-xiao)
+            - **Node Backbone (Waveshare)** → [Go to Backbone downloads](./releases/INDEX.md#node-backbone-waveshare)
+            - **Node Pixel Controllers (XIAO/Waveshare)** → [Go to Pixel Controller downloads](./releases/INDEX.md#node-pixel-controllers-xiaowaveshare)
+
+            Or browse all mirrored releases directly:  
+            https://github.com/${dstOwner}/${dstRepo}/releases
+            `;
+              await upsertFile("README.md", readme, "docs: update firmware download links");
+            }
+
+            core.info("Done.");
