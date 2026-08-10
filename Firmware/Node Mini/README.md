@@ -17,8 +17,7 @@ Use WLED UI: Settings -> Security & Updates -> Manual OTA.
 ```sh
 esptool.py --chip esp32s3 write_flash 0x0000 <your-file>.full.bin
 ```
-- Or if you prefer web-based flasher: 
-- [ESPConnect](https://thelastoutpostworkshop.github.io/ESPConnect/)
+- Or if you prefer web-based flasher: [ESPConnect](https://thelastoutpostworkshop.github.io/ESPConnect/)
   
 Latest:
 - [seeed-xiao-esp32s3-v16-seeed_xiao_esp32s3v2-e1ca36c (mirrored)](https://github.com/johnvoipguy/WateefyElectronics/releases/tag/mirror-seeed-xiao-esp32s3-v16-seeed_xiao_esp32s3v2-e1ca36c)
