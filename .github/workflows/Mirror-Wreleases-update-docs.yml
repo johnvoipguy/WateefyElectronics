@@ -1,4 +1,4 @@
-name: Mirror WLED releases + update download docs
+name: Mirror WLED releases + firmware README index
 
 on:
   workflow_dispatch:
@@ -11,17 +11,12 @@ on:
         description: "Case-insensitive regex for source release title"
         required: true
         default: "(xiao|waveshare)"
-      write_readme:
-        description: "Also update top-level README.md links section"
-        required: true
-        type: boolean
-        default: true
 
 permissions:
   contents: write
 
 jobs:
-  mirror-and-index:
+  mirror-and-firmware-docs:
     runs-on: ubuntu-latest
     env:
       SRC_OWNER: johnvoipguy
@@ -30,10 +25,9 @@ jobs:
       DST_REPO: WateefyElectronics
       MAX_RELEASES: ${{ github.event.inputs.max_releases }}
       TITLE_REGEX: ${{ github.event.inputs.title_regex }}
-      WRITE_README: ${{ github.event.inputs.write_readme }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Mirror releases/assets and generate docs
+      - name: Mirror releases/assets and update firmware README files
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,15 +38,17 @@ jobs:
             const dstRepo = process.env.DST_REPO;
             const maxReleases = Number(process.env.MAX_RELEASES || "50");
             const titleRegex = new RegExp(process.env.TITLE_REGEX || "(xiao|waveshare)", "i");
-            const writeReadme = String(process.env.WRITE_README) === "true";
-
             const normalize = (s) => (s || "").trim().toLowerCase();
 
             core.info(`Source: ${srcOwner}/${srcRepo}`);
             core.info(`Destination: ${dstOwner}/${dstRepo}`);
+            core.info(`Regex: ${titleRegex}`);
+            core.info(`Max releases: ${maxReleases}`);
 
+            // Verify destination repo access
             await github.rest.repos.get({ owner: dstOwner, repo: dstRepo });
 
+            // Pull source releases
             const sourceReleases = await github.paginate(
               github.rest.repos.listReleases,
               { owner: srcOwner, repo: srcRepo, per_page: 100 }
@@ -64,7 +60,11 @@ jobs:
               .slice(0, maxReleases);
 
             core.info(`Matched source releases: ${candidates.length}`);
+            if (candidates.length === 0) {
+              core.warning("No source releases matched the title regex.");
+            }
 
+            // Mirror releases and assets
             for (const src of candidates) {
               const srcTag = src.tag_name;
               const dstTag = `mirror-${srcTag}`;
@@ -79,6 +79,8 @@ jobs:
                 ``,
                 src.body || "_No source release notes provided._"
               ].join("\n");
+
+              core.info(`Processing: ${src.name || srcTag} -> ${dstTag}`);
 
               let dstRelease;
               try {
@@ -100,6 +102,7 @@ jobs:
                 core.info(`Updated release ${dstTag}`);
               } catch (e) {
                 if (e.status !== 404) throw e;
+
                 dstRelease = await github.rest.repos.createRelease({
                   owner: dstOwner,
                   repo: dstRepo,
@@ -114,13 +117,14 @@ jobs:
 
               const releaseId = dstRelease.data.id;
 
-              // ---- DEDUPE SECTION (normalized filenames) ----
+              // De-dupe assets by normalized filename
               const existingAssets = await github.paginate(
                 github.rest.repos.listReleaseAssets,
                 { owner: dstOwner, repo: dstRepo, release_id: releaseId, per_page: 100 }
               );
               const existingNames = new Set(existingAssets.map(a => normalize(a.name)));
 
+              core.info(`Source assets: ${src.assets.length}`);
               for (const a of src.assets) {
                 const normalized = normalize(a.name);
                 if (existingNames.has(normalized)) {
@@ -157,57 +161,29 @@ jobs:
               }
             }
 
-            const dstReleases = (await github.paginate(
+            // Build categorized lists from mirrored destination releases
+            const mirrored = (await github.paginate(
               github.rest.repos.listReleases,
               { owner: dstOwner, repo: dstRepo, per_page: 100 }
             )).filter(r => !r.draft && (r.tag_name || "").startsWith("mirror-"));
 
-            const mini = dstReleases.filter(r =>
+            const mini = mirrored.filter(r =>
               /(xiao|seeed-xiao)/i.test(r.name || "") || /(xiao|seeed-xiao)/i.test(r.tag_name || "")
             );
-            const backbone = dstReleases.filter(r =>
+
+            const backbone = mirrored.filter(r =>
               /(waveshare)/i.test(r.name || "") || /(waveshare)/i.test(r.tag_name || "")
             );
 
-            const latestMini = mini[0];
-            const latestBackbone = backbone[0];
-            const miniLines = mini.slice(0, 20).map(r => `- [${r.name || r.tag_name}](${r.html_url})`);
-            const backboneLines = backbone.slice(0, 20).map(r => `- [${r.name || r.tag_name}](${r.html_url})`);
+            const pixel = mirrored.filter(r =>
+              /(xiao|seeed-xiao|waveshare|pixel)/i.test(r.name || "") ||
+              /(xiao|seeed-xiao|waveshare|pixel)/i.test(r.tag_name || "")
+            );
 
-            const indexMd = `# Wateefy Firmware Download Center
-
-            This page organizes mirrored firmware from:
-            \`${srcOwner}/${srcRepo}\`
-
-            ## Node Mini (XIAO)
-
-            **Latest recommended:**  
-            ${latestMini ? `- [${latestMini.name || latestMini.tag_name}](${latestMini.html_url})` : "- _None yet_"}
-
-            **Recent Mini (XIAO) releases:**  
-            ${miniLines.length ? miniLines.join("\n") : "- _None yet_"}
-
-            ---
-
-            ## Node Backbone (Waveshare)
-
-            **Latest recommended:**  
-            ${latestBackbone ? `- [${latestBackbone.name || latestBackbone.tag_name}](${latestBackbone.html_url})` : "- _None yet_"}
-
-            **Recent Backbone (Waveshare) releases:**  
-            ${backboneLines.length ? backboneLines.join("\n") : "- _None yet_"}
-
-            ---
-
-            ## Node Pixel Controllers (XIAO/Waveshare)
-
-            Use either Mini (XIAO) or Backbone (Waveshare) firmware depending on your board.
-
-            ---
-
-            ## All releases
-            https://github.com/${dstOwner}/${dstRepo}/releases
-            `;
+            const list = (arr, n = 30) =>
+              arr.slice(0, n).map(r => `- [${r.name || r.tag_name}](${r.html_url})`).join("\n") || "- _None yet_";
+            const latest = (arr) =>
+              arr[0] ? `- [${arr[0].name || arr[0].tag_name}](${arr[0].html_url})` : "- _None yet_";
 
             async function upsertFile(path, content, message) {
               let sha;
@@ -229,21 +205,61 @@ jobs:
               core.info(`Upserted ${path}`);
             }
 
-            await upsertFile("releases/INDEX.md", indexMd, "docs: update firmware download index");
+            const firmwareReadme = `# Firmware Downloads
 
-            if (writeReadme) {
-              const readme = `## Firmware Downloads
+            Choose your hardware family:
 
-            Use this quick selector:
+            - [LED Pixel Controllers](./LED%20Pixel%20Controllers/README.md)
+            - [Node Mini](./Node%20Mini/README.md)
+            - [Node Backbone](./Node%20Backbone/README.md)
 
-            - **Node Mini (XIAO)** → [Go to Mini downloads](./releases/INDEX.md#node-mini-xiao)
-            - **Node Backbone (Waveshare)** → [Go to Backbone downloads](./releases/INDEX.md#node-backbone-waveshare)
-            - **Node Pixel Controllers (XIAO/Waveshare)** → [Go to Pixel Controller downloads](./releases/INDEX.md#node-pixel-controllers-xiaowaveshare)
-
-            Or browse all mirrored releases directly:  
+            All mirrored releases:
             https://github.com/${dstOwner}/${dstRepo}/releases
             `;
-              await upsertFile("README.md", readme, "docs: update firmware download links");
-            }
+
+            const miniReadme = `# Node Mini Firmware (XIAO)
+
+            Latest:
+            ${latest(mini)}
+
+            Recent builds:
+            ${list(mini, 30)}
+
+            All releases:
+            https://github.com/${dstOwner}/${dstRepo}/releases
+            `;
+
+            const backboneReadme = `# Node Backbone Firmware (Waveshare)
+
+            Latest:
+            ${latest(backbone)}
+
+            Recent builds:
+            ${list(backbone, 30)}
+
+            All releases:
+            https://github.com/${dstOwner}/${dstRepo}/releases
+            `;
+
+            const pixelReadme = `# LED Pixel Controller Firmware (XIAO / Waveshare)
+
+            Recommended families:
+            - Node Mini (XIAO): [open](../Node%20Mini/README.md)
+            - Node Backbone (Waveshare): [open](../Node%20Backbone/README.md)
+
+            Latest XIAO:
+            ${latest(mini)}
+
+            Latest Waveshare:
+            ${latest(backbone)}
+
+            Recent related builds:
+            ${list(pixel, 30)}
+            `;
+
+            await upsertFile("firmware/README.md", firmwareReadme, "docs: update firmware index");
+            await upsertFile("firmware/Node Mini/README.md", miniReadme, "docs: update Node Mini firmware links");
+            await upsertFile("firmware/Node Backbone/README.md", backboneReadme, "docs: update Node Backbone firmware links");
+            await upsertFile("firmware/LED Pixel Controllers/README.md", pixelReadme, "docs: update LED Pixel Controllers firmware links");
 
             core.info("Done.");
