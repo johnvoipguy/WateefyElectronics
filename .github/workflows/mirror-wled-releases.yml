@@ -1,25 +1,7 @@
-name: Mirror selected releases from wled-custom-builds
+name: Mirror releases (xiao/waveshare)
 
 on:
   workflow_dispatch:
-    inputs:
-      source_repo:
-        description: "Source repo in owner/name format"
-        required: true
-        default: "johnvoipguy/wled-custom-builds"
-      title_regex:
-        description: "Case-insensitive regex applied to release title"
-        required: true
-        default: "(xiao|waveshare)"
-      max_releases:
-        description: "Max number of source releases to process this run"
-        required: true
-        default: "30"
-      overwrite_existing:
-        description: "If true, delete/recreate destination release when tag exists"
-        required: true
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -27,184 +9,129 @@ permissions:
 jobs:
   mirror:
     runs-on: ubuntu-latest
+    env:
+      SRC_OWNER: johnvoipguy
+      SRC_REPO: wled-custom-builds
+      DST_OWNER: johnvoipguy
+      DST_REPO: WateefyElectronics
+      TITLE_REGEX: (xiao|waveshare)
+      MAX_RELEASES: "50"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Mirror releases
+      - name: Mirror
         uses: actions/github-script@v7
-        env:
-          SOURCE_REPO: ${{ github.event.inputs.source_repo }}
-          TITLE_REGEX: ${{ github.event.inputs.title_regex }}
-          MAX_RELEASES: ${{ github.event.inputs.max_releases }}
-          OVERWRITE_EXISTING: ${{ github.event.inputs.overwrite_existing }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
-            const path = require('path');
+            const regex = new RegExp(process.env.TITLE_REGEX, 'i');
+            const max = Number(process.env.MAX_RELEASES || '50');
 
-            const [srcOwner, srcRepo] = process.env.SOURCE_REPO.split('/');
-            const dstOwner = context.repo.owner;
-            const dstRepo = context.repo.repo;
-            const titleRegex = new RegExp(process.env.TITLE_REGEX, 'i');
-            const maxReleases = Number(process.env.MAX_RELEASES || '30');
-            const overwriteExisting = String(process.env.OVERWRITE_EXISTING) === 'true';
-
-            if (!srcOwner || !srcRepo) {
-              core.setFailed(`Invalid SOURCE_REPO: ${process.env.SOURCE_REPO}`);
-              return;
-            }
+            const srcOwner = process.env.SRC_OWNER;
+            const srcRepo = process.env.SRC_REPO;
+            const dstOwner = process.env.DST_OWNER;
+            const dstRepo = process.env.DST_REPO;
 
             core.info(`Source: ${srcOwner}/${srcRepo}`);
-            core.info(`Destination: ${dstOwner}/${dstRepo}`);
-            core.info(`Title filter regex: ${titleRegex}`);
-            core.info(`Max releases: ${maxReleases}`);
-            core.info(`Overwrite existing: ${overwriteExisting}`);
+            core.info(`Dest:   ${dstOwner}/${dstRepo}`);
 
-            // Fetch source releases (latest first)
-            const srcReleases = await github.paginate(
+            // 1) Verify destination repo access
+            await github.rest.repos.get({ owner: dstOwner, repo: dstRepo });
+
+            // 2) Pull source releases
+            const all = await github.paginate(
               github.rest.repos.listReleases,
               { owner: srcOwner, repo: srcRepo, per_page: 100 }
             );
 
-            const candidates = srcReleases
-              .filter(r => !r.draft) // skip drafts
-              .filter(r => titleRegex.test(r.name || ''))
-              .slice(0, maxReleases);
+            const matches = all
+              .filter(r => !r.draft)
+              .filter(r => regex.test(r.name || ''))
+              .slice(0, max);
 
-            core.info(`Found ${candidates.length} matching source releases`);
+            core.info(`Matched releases: ${matches.length}`);
+            if (matches.length === 0) {
+              core.warning('No matching releases found. Check TITLE_REGEX and source release names.');
+              return;
+            }
 
-            for (const srcRel of candidates) {
-              const srcTag = srcRel.tag_name;
+            for (const r of matches) {
+              const srcTag = r.tag_name;
               const dstTag = `mirror-${srcTag}`;
-              const dstName = srcRel.name
-                ? `${srcRel.name} (mirrored)`
-                : `Mirrored ${srcTag}`;
+              const dstName = `${r.name || srcTag} (mirrored)`;
 
-              core.info(`\n--- Processing source release: ${srcRel.name} (${srcTag}) -> ${dstTag}`);
+              core.info(`Processing: ${r.name} -> ${dstTag}`);
 
-              // Compose destination body with provenance
-              const sourceUrl = srcRel.html_url;
-              const sourceRepoUrl = `https://github.com/${srcOwner}/${srcRepo}/releases`;
-              const body = [
-                `Mirrored from **${srcOwner}/${srcRepo}**`,
-                ``,
-                `- Source release: ${sourceUrl}`,
-                `- Source releases list: ${sourceRepoUrl}`,
-                `- Source tag: \`${srcTag}\``,
-                ``,
-                `---`,
-                ``,
-                srcRel.body || '_No source release notes provided._'
-              ].join('\n');
-
-              // Check if destination release already exists by tag
-              let existing = null;
+              let rel;
               try {
-                existing = await github.rest.repos.getReleaseByTag({
-                  owner: dstOwner,
-                  repo: dstRepo,
-                  tag: dstTag
-                });
-              } catch (e) {
-                if (e.status !== 404) throw e;
-              }
-
-              if (existing && overwriteExisting) {
-                core.info(`Destination release ${dstTag} exists. Deleting (overwrite enabled)...`);
-                await github.rest.repos.deleteRelease({
-                  owner: dstOwner,
-                  repo: dstRepo,
-                  release_id: existing.data.id
+                const existing = await github.rest.repos.getReleaseByTag({
+                  owner: dstOwner, repo: dstRepo, tag: dstTag
                 });
 
-                // Best-effort delete ref so tag can be recreated
-                try {
-                  await github.rest.git.deleteRef({
-                    owner: dstOwner,
-                    repo: dstRepo,
-                    ref: `tags/${dstTag}`
-                  });
-                } catch (e) {
-                  core.warning(`Could not delete existing tag refs/tags/${dstTag}: ${e.message}`);
-                }
-
-                existing = null;
-              }
-
-              // Create or update destination release
-              let dstRelease;
-              if (!existing) {
-                dstRelease = await github.rest.repos.createRelease({
-                  owner: dstOwner,
-                  repo: dstRepo,
-                  tag_name: dstTag,
-                  name: dstName,
-                  body,
-                  draft: false,
-                  prerelease: srcRel.prerelease,
-                  target_commitish: context.sha
-                });
-                core.info(`Created destination release ${dstTag}`);
-              } else {
-                dstRelease = await github.rest.repos.updateRelease({
+                rel = await github.rest.repos.updateRelease({
                   owner: dstOwner,
                   repo: dstRepo,
                   release_id: existing.data.id,
                   name: dstName,
-                  body,
+                  body: `Mirrored from ${r.html_url}\n\n${r.body || ''}`,
                   draft: false,
-                  prerelease: srcRel.prerelease
+                  prerelease: r.prerelease
                 });
-                core.info(`Updated destination release ${dstTag}`);
+                core.info(`Updated release ${dstTag}`);
+              } catch (e) {
+                if (e.status !== 404) throw e;
+
+                rel = await github.rest.repos.createRelease({
+                  owner: dstOwner,
+                  repo: dstRepo,
+                  tag_name: dstTag,
+                  name: dstName,
+                  body: `Mirrored from ${r.html_url}\n\n${r.body || ''}`,
+                  draft: false,
+                  prerelease: r.prerelease
+                });
+                core.info(`Created release ${dstTag}`);
               }
 
-              const tmpDir = path.join(process.env.RUNNER_TEMP || '/tmp', `mirror-${Date.now()}-${Math.random().toString(16).slice(2)}`);
-              fs.mkdirSync(tmpDir, { recursive: true });
+              const releaseId = rel.data.id;
 
-              // If updating without overwrite, avoid duplicate asset names by collecting existing names
-              let existingAssetNames = new Set();
-              if (existing && !overwriteExisting) {
-                const assets = await github.paginate(
-                  github.rest.repos.listReleaseAssets,
-                  { owner: dstOwner, repo: dstRepo, release_id: dstRelease.data.id, per_page: 100 }
-                );
-                existingAssetNames = new Set(assets.map(a => a.name));
-              }
+              // existing assets in destination
+              const existingAssets = await github.paginate(
+                github.rest.repos.listReleaseAssets,
+                { owner: dstOwner, repo: dstRepo, release_id: releaseId, per_page: 100 }
+              );
+              const existingNames = new Set(existingAssets.map(a => a.name));
 
-              for (const asset of srcRel.assets) {
-                const assetName = asset.name;
-                if (existingAssetNames.has(assetName)) {
-                  core.info(`Skipping existing asset: ${assetName}`);
+              core.info(`Source assets: ${r.assets.length}`);
+              for (const a of r.assets) {
+                if (existingNames.has(a.name)) {
+                  core.info(`Skip existing asset: ${a.name}`);
                   continue;
                 }
 
-                core.info(`Downloading asset: ${assetName}`);
-                const downloadResp = await github.request(asset.url, {
-                  headers: {
-                    accept: 'application/octet-stream'
-                  }
+                core.info(`Download: ${a.name}`);
+                const res = await fetch(a.browser_download_url, {
+                  headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
                 });
+                if (!res.ok) {
+                  core.warning(`Failed download ${a.name}: HTTP ${res.status}`);
+                  continue;
+                }
 
-                const filePath = path.join(tmpDir, assetName);
-                fs.writeFileSync(filePath, Buffer.from(downloadResp.data));
+                const buf = Buffer.from(await res.arrayBuffer());
+                if (!buf.length) {
+                  core.warning(`Empty file: ${a.name}`);
+                  continue;
+                }
 
-                const stat = fs.statSync(filePath);
-                const data = fs.readFileSync(filePath);
-
-                core.info(`Uploading asset: ${assetName} (${stat.size} bytes)`);
+                core.info(`Upload: ${a.name} (${buf.length} bytes)`);
                 await github.rest.repos.uploadReleaseAsset({
                   owner: dstOwner,
                   repo: dstRepo,
-                  release_id: dstRelease.data.id,
-                  name: assetName,
-                  data,
-                  headers: {
-                    'content-type': asset.content_type || 'application/octet-stream',
-                    'content-length': stat.size
-                  }
+                  release_id: releaseId,
+                  name: a.name,
+                  data: buf
                 });
               }
-
-              core.info(`Done: ${dstRelease.data.html_url}`);
             }
 
-            core.info('\nMirroring run completed.');
+            core.info('Mirror complete');
