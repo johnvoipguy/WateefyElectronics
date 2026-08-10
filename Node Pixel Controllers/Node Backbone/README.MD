@@ -140,7 +140,7 @@ For Ethernet-only operation, the entire web server would need to be replaced wit
 **Step 3: Configure LED Settings**
 1. Access web interface via WiFi IP: `http://192.168.50.230`
 2. Go to **Config → LED Preferences**
-3. Default LED pin is GPIO 48 (first of 8 channels)
+3. Default LED pin is GPIO 0 (first of 8 channels)
 4. Configure your LED type (WS2812B, SK6812, etc.)
 5. Set number of LEDs per channel
 6. Save settings
@@ -149,7 +149,7 @@ For Ethernet-only operation, the entire web server would need to be replaced wit
 - **Microphone Input**: GPIO 4 (I2S)
 - Enable in **Config → Usermods**
 - Requires I2S microphone module (INMP441, ICS-43434, etc.)
-- Connect: SCK→GPIO 4, SD→GPIO 4, WS→not connected
+- Connect: SCK/SD WS→not connected
 
 #### Network Settings (Already Configured)
 - **Ethernet Type**: Pre-configured as "ESP32-S3 SPI Ethernet (Type 13)"
