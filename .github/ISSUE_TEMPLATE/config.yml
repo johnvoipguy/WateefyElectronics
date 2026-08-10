@@ -1,6 +1,11 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Questions / Test Reports
+  - name: Question / Test Report
     url: https://github.com/johnvoipguy/WateefyElectronics/issues/new?template=question-test-report.yml
-    about: Use the structured Question / Test Report form for model/test/result/concern submissions.
-    
+    about: Ask a question or submit a structured test result.
+  - name: Bug Report
+    url: https://github.com/johnvoipguy/WateefyElectronics/issues/new?template=bug-report.yml
+    about: Report a reproducible problem with hardware behavior or documentation.
+  - name: Feature Request
+    url: https://github.com/johnvoipguy/WateefyElectronics/issues/new?template=feature-request.yml
+    about: Suggest an improvement for hardware, docs, firmware profile, or repo process.

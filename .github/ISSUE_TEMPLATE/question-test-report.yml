@@ -1,7 +1,7 @@
 name: Question / Test Report
 description: Ask a question or report a model/test result with issues and concerns.
 title: "[Question/Test]: "
-labels: ["question"]
+labels: ["question", "test-report"]
 body:
   - type: dropdown
     id: model
