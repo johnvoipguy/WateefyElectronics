@@ -23,14 +23,13 @@ This is a custom WLED build for the **Waveshare ESP32-S3-ETH** board with W5500 
 
 **📥 Download Latest Firmware:**
 
-- Wrong network behavior or missing Ethernet: verify you flashed the Waveshare target build.
+**⚠️ Use v17** — this is the firmware line with full Ethernet protocol support (E1.31, Art-Net, DDP, MQTT over Ethernet). v16 is archived and does not route WLED protocols through Ethernet.
+
+- Wrong network behavior or missing Ethernet: verify you flashed the v17 Waveshare target build.
 - OTA failures: flash `.full.bin` over UART and retry setup.
  
-Latest:
-- [waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb (mirrored)](https://github.com/johnvoipguy/WateefyElectronics/releases/tag/mirror-waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb)
-
-Recent builds:
-- [waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb (mirrored)](https://github.com/johnvoipguy/WateefyElectronics/releases/tag/mirror-waveshare-esp32s3-eth-v16-waveshare_esp32s3_eth-e5614cb)
+Latest v17 builds:
+https://github.com/johnvoipguy/WateefyElectronics/releases (filter for `waveshare-esp32s3-eth-v17`)
 
 All releases:
 https://github.com/johnvoipguy/WateefyElectronics/releases
@@ -49,7 +48,8 @@ See [detailed instructions below](#flashing-instructions) for more options.
 ### Hardware Configuration
 - **Board**: Waveshare ESP32-S3-ETH (ESP32-S3, 16MB Flash, 8MB PSRAM)
 - **Ethernet**: W5500 SPI Ethernet (pins: MISO=12, MOSI=11, SCLK=13, CS=14, RST=9, INT=10)
-- **LED Outputs**: 8 channels configured (GPIO 0, 1, 2, 3, 15, 18, 16, 17)
+- **LED Outputs**: 8 channels configured (GPIO 0, 1, 2, 3, 15, 18, 16, 17) — hardware-driven via 4 RMT + parallel I2S
+- **Status LED**: GPIO21 (onboard, not available for pixel output)
 - **Features**: MQTT, AudioReactive usermod enabled
 
 ### Flashing Instructions
@@ -74,11 +74,9 @@ Replace `/dev/ttyACM0` with your serial port (Windows: `COM3`, `COM4`, etc.)
 
 ### Network Configuration
 
-**IMPORTANT**: This build uses a dual-interface setup due to AsyncTCP library limitations with W5500:
-
-#### Dual-Interface Operation
-- **WiFi Interface (required)**: Provides web interface, WebSockets, and HTTP API
-- **Ethernet Interface (optional)**: Provides UDP protocols (E1.31, Art-Net, DDP) for LED control
+**v17 offers true dual-interface operation:**
+- **Ethernet (W5500)**: Wired 10/100 Mbps, carries E1.31, Art-Net, DDP, MQTT — full protocol support
+- **WiFi**: Backup control path and web configuration interface
 
 #### Initial Setup Procedure
 1. **First boot** (without Ethernet cable):
@@ -87,37 +85,34 @@ Replace `/dev/ttyACM0` with your serial port (Windows: `COM3`, `COM4`, etc.)
    - Save settings and reboot
 
 2. **Subsequent boots** (with Ethernet cable connected):
-   - Ethernet: Gets DHCP address (e.g., 192.168.50.239)
+   - Ethernet: Gets DHCP address automatically (e.g., 192.168.50.239)
    - WiFi: Connects to configured SSID (e.g., 192.168.50.230)
-   - Both interfaces active simultaneously
+   - Both interfaces active simultaneously — use Ethernet for LED streaming
 
-#### Interface Capabilities
+#### Interface Capabilities (v17)
 
-**WiFi Interface** (.230 in example):
-- ✅ Full web interface
-- ✅ WebSockets for real-time updates
-- ✅ HTTP/JSON API
-- ✅ OTA updates
-- ✅ All UDP protocols (E1.31, Art-Net, DDP)
-
-**Ethernet Interface** (.239 in example):
-- ✅ UDP protocols (E1.31, Art-Net, DDP) - **Best for LED streaming**
+**Ethernet Interface** (primary for LED control):
+- ✅ E1.31/sACN, Art-Net, DDP — **full protocol support over wire**
 - ✅ MQTT
+- ✅ HTTP/JSON API
+- ✅ Web interface
 - ✅ Ping/ICMP
-- ❌ Web interface (AsyncWebServer limitation)
-- ❌ HTTP/JSON API
-- ❌ WebSockets
+- ✅ Low-latency, deterministic LED streaming
+
+**WiFi Interface** (configuration and backup):
+- ✅ Full web interface
+- ✅ All UDP and TCP protocols
+- ✅ Automatic failover if Ethernet drops
+- ✅ OTA updates
 
 #### Recommended Usage
-- **Configure** via WiFi web interface (http://192.168.50.230)
-- **Control LEDs** via Ethernet UDP protocols for low-latency, reliable streaming
-- **Automatic failover**: If Ethernet disconnects, WiFi continues to work
+- **Primary control**: Ethernet for xLights, sACN, Art-Net, and MQTT streaming
+- **Configuration**: Web interface via either interface (WiFi or Ethernet IP)
+- **Failover**: WiFi remains active if Ethernet cable is unplugged
 
 ### Technical Notes
 
-The AsyncTCP library used by WLED's web server is hardcoded to use ESP32's LwIP TCP stack and cannot bind to the W5500's separate TCP stack. This requires keeping WiFi active to provide web interface functionality while Ethernet handles UDP-based LED control protocols.
-
-For Ethernet-only operation, the entire web server would need to be replaced with ESP32's synchronous WebServer library, which is a substantial code change beyond the scope of this build.
+v17 uses W5500 as a native Ethernet MAC/PHY interface (lwIP stack on ESP32 cores). This differs from v16's attempted hardware-socket offload, which proved non-functional — no WLED protocols actually reached Ethernet in v16. v17 trades some MCU cycles for correctness: the network stack runs in software, but every protocol that binds to lwIP works over Ethernet automatically.
 
 ### 🔧 Configuration Guide
 
@@ -139,29 +134,30 @@ For Ethernet-only operation, the entire web server would need to be replaced wit
    - **Ethernet IP** (e.g., 192.168.50.239) - for LED control protocols
 
 **Step 3: Configure LED Settings**
-1. Access web interface via WiFi IP: `http://192.168.50.230`
+1. Access web interface: `http://192.168.50.230` (WiFi) or `http://192.168.50.239` (Ethernet)
 2. Go to **Config → LED Preferences**
-3. Default LED pin is GPIO 0 (first of 8 channels)
-4. Configure your LED type (WS2812B, SK6812, etc.)
+3. Default LED pins: GPIO 0–7 (8 independent channels)
+   - **Outputs 1–4**: Hardware RMT drivers (recommended for timing-critical strips like WS2812B)
+   - **Outputs 5–8**: Software I2S drivers (automatic fallback when RMT is full)
+4. Configure LED type per channel (WS2812B, SK6812, WS2811, etc.)
 5. Set number of LEDs per channel
-6. Save settings
+6. Save settings — no reboot required
 
 #### AudioReactive Setup (Optional)
-- **Microphone Input**: GPIO 4 (I2S)
-- Enable in **Config → Usermods**
-- Requires I2S microphone module (INMP441, ICS-43434, etc.)
-- Connect: SCK/SD WS→not connected
+- **Microphone Input**: GPIO 4 (I2S) — requires external I2S microphone module (INMP441, ICS-43434, etc.)
+- Enable in **Config → Usermods → AudioReactive**
+- **Note**: I2S audio may conflict with outputs 5–8 if they require I2S parallel drivers; test your LED configuration first
 
 #### Network Settings (Already Configured)
-- **Ethernet Type**: Pre-configured as "ESP32-S3 SPI Ethernet (Type 13)"
-- **DHCP**: Enabled by default on both interfaces
-- **mDNS**: Access via `http://wled-<chipid>.local` after WiFi is configured
+- **Ethernet Type**: W5500 SPI (pre-configured, Type 13)
+- **DHCP**: Enabled on both interfaces; check router for assigned IPs
+- **mDNS**: `http://wled-<chipid>.local` resolves over both WiFi and Ethernet (after WiFi is configured)
 
 #### Important Notes
 - ⚠️ **WiFi MUST be configured first** before connecting Ethernet
-- ⚠️ Web interface only accessible via WiFi IP, not Ethernet IP
-- ✅ Use Ethernet IP for E1.31/Art-Net/DDP LED streaming (best performance)
-- ✅ Use WiFi IP for web configuration and control
+- ✅ Web interface accessible via both WiFi IP and Ethernet IP (v17)
+- ✅ **Use Ethernet IP for E1.31/Art-Net/DDP LED streaming** (low-latency, deterministic, recommended)
+- ✅ WiFi remains active as automatic failover if Ethernet drops
 
 ## ⚙️ Features
 - WS2812FX library with more than 100 special effects  
