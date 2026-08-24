@@ -46,9 +46,10 @@ See [detailed instructions below](#flashing-instructions) for more options.
 - If you prefer web-based flasher:  [ESPConnect](https://thelastoutpostworkshop.github.io/ESPConnect/)
 
 ### Hardware Configuration
-- **Board**: Waveshare ESP32-S3-ETH (ESP32-S3, 16MB Flash, 8MB PSRAM)
+- **Board**: Waveshare ESP32-S3-ETH (ESP32-S3, 16MB Flash, 8MB PSRAM) — v1a hardware
 - **Ethernet**: W5500 SPI Ethernet (pins: MISO=12, MOSI=11, SCLK=13, CS=14, RST=9, INT=10)
 - **LED Outputs**: 8 channels configured (GPIO 0, 1, 2, 3, 15, 18, 16, 17) — hardware-driven via 4 RMT + parallel I2S
+  - **Note for v1b:** Proposed GPIO0→GPIO21 swap pending; when v1b ships, update this list and firmware accordingly
 - **Status LED**: GPIO21 (onboard, not available for pixel output)
 - **Features**: MQTT, AudioReactive usermod enabled
 
