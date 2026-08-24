@@ -58,7 +58,6 @@ Alternatively, use web-based flasher: [ESPConnect](https://thelastoutpostworksho
 - **LED Outputs**: 8 channels configured (GPIO 0, 1, 2, 3, 15, 18, 16, 17) — hardware-driven via 4 RMT + parallel I2S
   - **Note for v1b:** Proposed GPIO0→GPIO21 swap pending; when v1b ships, update this list and firmware accordingly
 - **Status LED**: GPIO21 (onboard, not available for pixel output)
-- **Features**: MQTT, AudioReactive usermod enabled
 
 ### Flashing Instructions
 
@@ -158,11 +157,6 @@ v17 uses W5500 as a native Ethernet MAC/PHY interface (lwIP stack on ESP32 cores
 2. Select your LED control protocol: **E1.31 (sACN), Art-Net, or DDP** (recommended)
 3. Set UDP port if needed (default: E1.31 = 5568, Art-Net = 6454, DDP = 4048)
 4. Save and test from your control software (xLights, Vixen, etc.)
-
-#### AudioReactive Setup (Optional)
-- **Microphone Input**: GPIO 4 (I2S) — requires external I2S microphone module (INMP441, ICS-43434, etc.)
-- Enable in **Config → Usermods → AudioReactive**
-- **Caveat**: I2S audio shares bus with outputs 5–8 (I2S drivers); enable audio **OR** use outputs 5–8, not both simultaneously
 
 #### Network Settings (Pre-Configured)
 - **Ethernet Type**: W5500 SPI (Type 13)
