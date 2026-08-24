@@ -163,6 +163,19 @@ v17 uses W5500 as a native Ethernet MAC/PHY interface (lwIP stack on ESP32 cores
 - **DHCP**: Enabled automatically
 - **mDNS**: `http://wled-<chipid>.local` available after WiFi setup
 
+#### Available GPIO for Usermods and Peripherals
+
+If you want to add custom functionality (temperature sensors, extra I/O, microphone input, etc.):
+
+- **GPIO 38–41**: Available for usermods (I²C, SPI, analog input, etc.)
+- **GPIO4**: Reserved for SD card (if future SD card support is added)
+
+**Do NOT use:**
+- GPIO 0–3, 15–18: LED data outputs
+- GPIO 21: Onboard status LED
+- GPIO 9–14: W5500 Ethernet SPI (CS, RST, INT, MOSI, SCLK, MISO)
+- GPIO 33–37: Module PSRAM (unavailable)
+
 #### Important Notes
 - ⚠️ **WiFi MUST be configured first** (Step 1) before connecting Ethernet cable
 - ⚠️ **Ethernet disables WiFi** — this is firmware behavior on this board, not a defect
