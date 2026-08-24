@@ -107,8 +107,8 @@ Replace `/dev/ttyACM0` with your serial port (Windows: `COM3`, `COM4`, etc.)
 
 #### Recommended Usage
 - **Primary control**: Ethernet for xLights, sACN, Art-Net, and MQTT streaming
-- **Configuration**: Web interface via either interface (WiFi or Ethernet IP)
-- **Failover**: WiFi remains active if Ethernet cable is unplugged
+- **Configuration**: Web interface via Ethernet IP (primary) or WiFi if needed
+- **Note on this firmware**: Waveshare v17 disables WiFi when Ethernet is connected. Other boards with different firmware keep both interfaces active.
 
 ### Technical Notes
 
