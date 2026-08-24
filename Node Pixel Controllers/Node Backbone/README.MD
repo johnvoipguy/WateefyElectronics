@@ -34,16 +34,23 @@ https://github.com/johnvoipguy/WateefyElectronics/releases (filter for `waveshar
 All releases:
 https://github.com/johnvoipguy/WateefyElectronics/releases
 
-**⚡ Flash Command:**
+**⚡ Flash Commands (v17):**
+
+First time or after factory reset (use FULL.bin):
 ```bash
-# First time (use FULL.bin)
-esptool.py --chip esp32s3 --port COM3 --baud 921600 \
-  write_flash 0x0 WLED_Waveshare_ESP32-S3-ETH_*_FULL.bin
+esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 \
+  write_flash 0x0 firmware/WLED_Waveshare_ESP32-S3-ETH_*_FULL.bin
 ```
 
-See [detailed instructions below](#flashing-instructions) for more options.
+OTA update on already-running board (use APP.bin, preserves settings):
+```bash
+esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 \
+  write_flash 0x10000 firmware/WLED_Waveshare_ESP32-S3-ETH_*_APP.bin
+```
 
-- If you prefer web-based flasher:  [ESPConnect](https://thelastoutpostworkshop.github.io/ESPConnect/)
+Replace `/dev/ttyACM0` with your serial port (Windows: `COM3`, `COM4`, etc.)
+
+Alternatively, use web-based flasher: [ESPConnect](https://thelastoutpostworkshop.github.io/ESPConnect/)
 
 ### Hardware Configuration
 - **Board**: Waveshare ESP32-S3-ETH (ESP32-S3, 16MB Flash, 8MB PSRAM) — v1a hardware
@@ -119,46 +126,55 @@ v17 uses W5500 as a native Ethernet MAC/PHY interface (lwIP stack on ESP32 cores
 
 #### First-Time Setup (WiFi Configuration Required)
 
-**Step 1: Initial Boot WITHOUT Ethernet Cable**
+**⚠️ CRITICAL: WiFi must be configured before Ethernet is connected.** This firmware disables WiFi when Ethernet cable is detected.
+
+**Step 1: Initial Boot — NO Ethernet Cable**
 1. Power on the board with **NO Ethernet cable connected**
-2. Device creates access point: `WLED-ETH-Config` (open, no password)
-3. Connect your phone/computer to this AP
-4. Browser should auto-open to http://4.3.2.1 (or navigate manually)
+2. Device creates open AP: `WLED-ETH-Config` (no password)
+3. Connect phone/computer to this AP
+4. Browser auto-opens to `http://4.3.2.1` (or navigate manually)
 5. Go to **Config → WiFi Setup**
 6. Enter your WiFi SSID and password
 7. Click **Save & Reboot**
 
-**Step 2: Dual-Interface Operation**
-1. After reboot, connect Ethernet cable to RJ45 port
-2. Device will get two IP addresses (check your router's DHCP list):
-   - **WiFi IP** (e.g., 192.168.50.230) - for web interface
-   - **Ethernet IP** (e.g., 192.168.50.239) - for LED control protocols
+**Step 2: Connect Ethernet (WiFi will disable)**
+1. After WiFi reboots and connects, plug Ethernet cable into RJ45 port
+2. **WiFi automatically disables when Ethernet link is detected** — this is by design for this firmware
+3. Device gets **one Ethernet IP** (check your router's DHCP list, e.g., 192.168.50.239)
+4. Web interface is now accessible **only via Ethernet IP** until Ethernet is unplugged
 
 **Step 3: Configure LED Settings**
-1. Access web interface: `http://192.168.50.230` (WiFi) or `http://192.168.50.239` (Ethernet)
+1. Access web interface via Ethernet: `http://192.168.50.239` (or use mDNS: `http://wled-<chipid>.local`)
 2. Go to **Config → LED Preferences**
 3. Default LED pins: GPIO 0–7 (8 independent channels)
    - **Outputs 1–4**: Hardware RMT drivers (recommended for timing-critical strips like WS2812B)
-   - **Outputs 5–8**: Software I2S drivers (automatic fallback when RMT is full)
-4. Configure LED type per channel (WS2812B, SK6812, WS2811, etc.)
-5. Set number of LEDs per channel
-6. Save settings — no reboot required
+   - **Outputs 5–8**: Software I2S drivers (automatic, no manual configuration needed)
+4. Select LED type per channel (WS2812B, SK6812, WS2811, etc.)
+5. Set LED count per channel
+6. Click **Save** — no reboot required
+
+**Step 4: Configure LED Streaming Protocol (Optional)**
+1. Go to **Config → Sync Interfaces**
+2. Select your LED control protocol: **E1.31 (sACN), Art-Net, or DDP** (recommended)
+3. Set UDP port if needed (default: E1.31 = 5568, Art-Net = 6454, DDP = 4048)
+4. Save and test from your control software (xLights, Vixen, etc.)
 
 #### AudioReactive Setup (Optional)
 - **Microphone Input**: GPIO 4 (I2S) — requires external I2S microphone module (INMP441, ICS-43434, etc.)
 - Enable in **Config → Usermods → AudioReactive**
-- **Note**: I2S audio may conflict with outputs 5–8 if they require I2S parallel drivers; test your LED configuration first
+- **Caveat**: I2S audio shares bus with outputs 5–8 (I2S drivers); enable audio **OR** use outputs 5–8, not both simultaneously
 
-#### Network Settings (Already Configured)
-- **Ethernet Type**: W5500 SPI (pre-configured, Type 13)
-- **DHCP**: Enabled on both interfaces; check router for assigned IPs
-- **mDNS**: `http://wled-<chipid>.local` resolves over both WiFi and Ethernet (after WiFi is configured)
+#### Network Settings (Pre-Configured)
+- **Ethernet Type**: W5500 SPI (Type 13)
+- **DHCP**: Enabled automatically
+- **mDNS**: `http://wled-<chipid>.local` available after WiFi setup
 
 #### Important Notes
-- ⚠️ **WiFi MUST be configured first** before connecting Ethernet
-- ✅ Web interface accessible via both WiFi IP and Ethernet IP (v17)
-- ✅ **Use Ethernet IP for E1.31/Art-Net/DDP LED streaming** (low-latency, deterministic, recommended)
-- ✅ WiFi remains active as automatic failover if Ethernet drops
+- ⚠️ **WiFi MUST be configured first** (Step 1) before connecting Ethernet cable
+- ⚠️ **Ethernet disables WiFi** — this is firmware behavior on this board, not a defect
+- ✅ Access web interface via **Ethernet IP only** when cable is connected
+- ✅ **Use Ethernet for E1.31/Art-Net/DDP** — low-latency, deterministic streaming (recommended over WiFi)
+- ✅ Unplug Ethernet cable to re-enable WiFi (e.g., for wireless troubleshooting)
 
 ## ⚙️ Features
 - WS2812FX library with more than 100 special effects  
