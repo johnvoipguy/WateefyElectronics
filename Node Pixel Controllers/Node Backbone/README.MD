@@ -165,22 +165,24 @@ If you want to add custom functionality (temperature sensors, extra I/O, microph
 - ✅ **Use Ethernet for E1.31/Art-Net/DDP** — low-latency, deterministic streaming (recommended over WiFi)
 - ✅ Unplug Ethernet cable to re-enable WiFi (e.g., for wireless troubleshooting)
 
-## ⚙️ Features
-- WS2812FX library with more than 100 special effects  
+## ⚙️ WLED Features
+
+This board runs **WLED** — open-source LED controller firmware. Key features:
+
+- **8 independent LED outputs** (this board: GPIO 0–3, 15–18)
+- WS2812FX library with 100+ special effects  
 - FastLED noise effects and 50 palettes  
-- Modern UI with color, effect and segment controls  
-- Segments to set different effects and colors to user defined parts of the LED string  
-- Settings page - configuration via the network  
-- Access Point and station mode - automatic failsafe AP  
-- Up to 10 LED outputs per instance
-- Support for RGBW strips  
-- Up to 250 user presets to save and load colors/effects easily, supports cycling through them.  
-- Presets can be used to automatically execute API calls  
-- Nightlight function (gradually dims down)  
-- Full OTA software updateability (HTTP + ArduinoOTA), password protectable  
-- Configurable analog clock (Cronixie, 7-segment and EleksTube IPS clock support via usermods) 
-- Configurable Auto Brightness limit for safe operation  
-- Filesystem-based config for easier backup of presets and settings  
+- Modern web UI with color, effect, and segment controls  
+- Segments to set different effects/colors to user-defined LED ranges  
+- Up to 250 user presets with automatic playback cycling  
+- Presets can trigger API calls  
+- Full network configuration via settings page  
+- Access Point (AP) and Station mode with automatic failsafe AP  
+- Support for RGBW and other LED strip types
+- Nightlight function (gradual dimming)  
+- Full OTA firmware updates (HTTP + ArduinoOTA), password-protectable  
+- Configurable auto-brightness limiting for safe operation  
+- Filesystem-based config backup/restore  
 
 ## 💡 Supported light control interfaces
 - WLED app for [Android](https://play.google.com/store/apps/details?id=com.aircoookie.WLED) and [iOS](https://apps.apple.com/us/app/wled/id1475695033)
@@ -197,27 +199,20 @@ If you want to add custom functionality (temperature sensors, extra I/O, microph
 - Infrared remotes (24-key RGB, receiver required)  
 - Simple timers/schedules (time from NTP, timezones/DST supported)  
 
-## 📲 Quick start guide and documentation
+## 📲 WLED Documentation
 
-See the [documentation on our official site](https://kno.wled.ge)!
+For complete WLED documentation, features, and tutorials:
+- **WLED Knowledge Base**: https://kno.wled.ge
+- **WLED Project Site**: https://wled.me
+- **Tutorials & Guides**: https://kno.wled.ge/basics/tutorials/
 
-[On this page](https://kno.wled.ge/basics/tutorials/) you can find excellent tutorials and tools to help you get your new project up and running!
+## 🤝 Community & Support
 
-## 🖼️ User interface
-<img src="/images/macbook-pro-space-gray-on-the-wooden-table.jpg" width="50%"><img src="/images/walking-with-iphone-x.jpg" width="50%">
-
-## 💾 Compatible hardware
-
-See [here](https://kno.wled.ge/basics/compatible-hardware)!
-
-## ✌️ Other
-
-Licensed under the EUPL v1.2 license  
-Credits [here](https://kno.wled.ge/about/contributors/)!
-
-Join the Discord server to discuss everything about WLED!
-
-<a href="https://discord.gg/QAh7wJHrRM"><img src="https://discordapp.com/api/guilds/473448917040758787/widget.png?style=banner2" width="25%"></a>
+**WLED Project:**
+- Licensed under the EUPL v1.2 license  
+- [Project Credits](https://kno.wled.ge/about/contributors/)
+- [Discord Community](https://discord.gg/QAh7wJHrRM)
+- [Forum](https://wled.discourse.group)
 
 Check out the WLED [Discourse forum](https://wled.discourse.group)!  
 
