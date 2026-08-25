@@ -59,31 +59,11 @@ Alternatively, use web-based flasher: [ESPConnect](https://thelastoutpostworksho
   - **Note for v1b:** Proposed GPIO0→GPIO21 swap pending; when v1b ships, update this list and firmware accordingly
 - **Status LED**: GPIO21 (onboard, not available for pixel output)
 
-### Flashing Instructions
-
-#### Using esptool.py (Command Line)
-1. Download the firmware from the [`firmware/`](firmware/) directory
-2. Flash using esptool.py:
-
-```bash
-# Full flash (includes bootloader, partitions, and firmware) - RECOMMENDED for first time
-esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 \
-  write_flash 0x0 firmware/WLED_Waveshare_ESP32-S3-ETH_*_FULL.bin
-
-# Or OTA update only (if already running WLED - preserves settings)
-esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 \
-  write_flash 0x10000 firmware/WLED_Waveshare_ESP32-S3-ETH_*_OTA.bin
-```
-
-Replace `/dev/ttyACM0` with your serial port (Windows: `COM3`, `COM4`, etc.)
-
-**Download firmware files:** [firmware/README.md](firmware/README.md)
-
 ### Network Configuration
 
-**v17 offers true dual-interface operation:**
+**v17 interface behavior:**
 - **Ethernet (W5500)**: Wired 10/100 Mbps, carries E1.31, Art-Net, DDP, MQTT — full protocol support
-- **WiFi**: Backup control path and web configuration interface
+- **WiFi**: Backup access carries E1.31, Art-Net, DDP, MQTT, webadmin — full protocol support (active only when Ethernet is disconnected)
 
 #### Initial Setup Procedure
 1. **First boot** (without Ethernet cable):
@@ -106,11 +86,12 @@ Replace `/dev/ttyACM0` with your serial port (Windows: `COM3`, `COM4`, etc.)
 - ✅ Ping/ICMP
 - ✅ Low-latency, deterministic LED streaming
 
-**WiFi Interface** (configuration and backup):
-- ✅ Full web interface
-- ✅ All UDP and TCP protocols
-- ✅ Automatic failover if Ethernet drops
+**WiFi Interface** (Initial configuration after flash and backup if no Ethernet):
+- ✅ Full web interface (webadmin)
+- ✅ E1.31 (sACN), Art-Net, DDP, MQTT — full protocol support
+- ✅ HTTP/JSON API and WebSockets
 - ✅ OTA updates
+- ✅ Automatic activation when Ethernet is disconnected
 
 #### Recommended Usage
 - **Primary control**: Ethernet for xLights, sACN, Art-Net, and MQTT streaming
@@ -138,9 +119,9 @@ v17 uses W5500 as a native Ethernet MAC/PHY interface (lwIP stack on ESP32 cores
 
 **Step 2: Connect Ethernet (WiFi will disable)**
 1. After WiFi reboots and connects, plug Ethernet cable into RJ45 port
-2. **WiFi automatically disables when Ethernet link is detected** — this is by design for this firmware
-3. Device gets **one Ethernet IP** (check your router's DHCP list, e.g., 192.168.50.239)
-4. Web interface is now accessible **only via Ethernet IP** until Ethernet is unplugged
+2. **WiFi automatically disables when Ethernet link is detected** — only one interface active at a time
+3. Device gets **Ethernet IP** (check your router's DHCP list, e.g., 192.168.50.239)
+4. Web interface accessible via **Ethernet IP only** until cable is unplugged (then WiFi auto-resumes)
 
 **Step 3: Configure LED Settings**
 1. Access web interface via Ethernet: `http://192.168.50.239` (or use mDNS: `http://wled-<chipid>.local`)
@@ -172,8 +153,9 @@ If you want to add custom functionality (temperature sensors, extra I/O, microph
 
 **Do NOT use:**
 - GPIO 0–3, 15–18: LED data outputs
-- GPIO 21: Onboard status LED
+- GPIO 4–7: SD card (reserved for future SD card support)
 - GPIO 9–14: W5500 Ethernet SPI (CS, RST, INT, MOSI, SCLK, MISO)
+- GPIO 21: Onboard status LED
 - GPIO 33–37: Module PSRAM (unavailable)
 
 #### Important Notes
