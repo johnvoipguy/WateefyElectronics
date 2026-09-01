@@ -193,12 +193,11 @@ jobs:
                 const data = fs.readFileSync(filePath);
 
                 core.info(`Uploading asset: ${assetName} (${stat.size} bytes)`);
-                await github.request(`POST ${uploadUrl}`, {
+                await github.request(`POST ${uploadUrl}?name=${encodeURIComponent(assetName)}`, {
                   headers: {
                     'content-type': asset.content_type || 'application/octet-stream',
                     'content-length': stat.size
                   },
-                  name: assetName,
                   data
                 });
               }
