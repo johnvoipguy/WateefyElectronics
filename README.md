@@ -2,7 +2,7 @@
   <img src="./images/Wateefy_Electronics Logo_Hero_no_BG.png" alt="Wateefy Electronics" width="380">
 </p>
 
-<h1 align="center">Wateefy Electronics</h1>
+<h1 align="center">Quality Engineered Electronics</h1>
 
 <p align="center"><strong>Hardware documentation, firmware images and release mirrors.</strong></p>
 
