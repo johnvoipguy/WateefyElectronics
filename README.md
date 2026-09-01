@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./images/REPLACE-WITH-LOGO-FILENAME.png" alt="Wateefy Electronics" width="380">
+  <img src="./images/Wateefy_Electronics Logo_Hero_no_BG.png" alt="Wateefy Electronics" width="380">
 </p>
 
 <h1 align="center">Wateefy Electronics</h1>
