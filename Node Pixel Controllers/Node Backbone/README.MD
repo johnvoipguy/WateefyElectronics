@@ -1,4 +1,4 @@
-<img src="../../images/Node_Backbone.png" width="485" height="445"> <img src="../../images/Node_Backbone_v1b_full.png" width="445" height="405">
+<img src="../../images/Node_Backbone.png" width="485" height="445"> <img src="../../images/Node_Backbone_v1b_full.png" width="485" height="445">
 
                           V1                                                                   V1b
 
