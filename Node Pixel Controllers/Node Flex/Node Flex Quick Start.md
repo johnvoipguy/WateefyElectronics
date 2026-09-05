@@ -24,6 +24,7 @@ Welcome to your NODE Flex! Flex is the "universal" board in the family — it ac
 - **Never connect or disconnect wiring with power applied.** Turn off and unplug your power supply first.
 - **Watch your polarity on the input terminal.** It's best practice to always double-check Vin and GND before powering up. The board has an ideal-diode circuit to protect against damage from a reversed input, and a Polarity LED that shows green (correct) or red (reversed) so you know at a glance.
 - **Match your fuses to your load.** Don't upsize fuses beyond what's printed on the silkscreen — the board's rated limits are there for a reason.
+- **Don't confuse the DMX jack with an Ethernet/network jack.** It's RJ45-shaped, but it's DMX/RS-485 only — never plug it into a switch, router, or any network cable. DMX gear only.
 
 ## Step 1 — Wire your power input
 
@@ -110,4 +111,4 @@ If you'd rather run your own external I²C sensors instead, don't use this heade
 
 ## Something not working?
 
-See the **Troubleshooting** section of the full NODE Flex Guide, or reach out through the support link printed on the board silkscreen. *(Placeholder — insert my support URL/QR destination here.)*
+See the **Troubleshooting** section of the full NODE Flex Guide, or reach out through the support link printed on the board silkscreen. [Click here to report Issues:](https://github.com/johnvoipguy/WateefyElectronics/issues)
