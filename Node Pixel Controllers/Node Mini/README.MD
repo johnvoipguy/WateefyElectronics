@@ -1,4 +1,4 @@
-<center><img src="../../images/Node_Mini.png" width="485" height="445"></center> <img src="../../images/Node_Mini.png" width="485" height="445">
+<center><img src="../../images/Node_Mini.png" width="485" height="445"></center> <center><img src="../../images/Node_Mini.png" width="485" height="445"></center>
 # Node Mini Firmware (XIAO)
 This page is the quick user entrypoint for Seeed Xiao ESP32S3 firmware in this repo.
 
