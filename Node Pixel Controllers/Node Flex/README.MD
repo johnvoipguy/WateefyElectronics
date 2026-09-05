@@ -1,4 +1,4 @@
-<center><img src="../../images/Node_Flex.png" width="445" height="405"></center>  <img src="../../images/Node_Flex_Full_v2b.png" width="445" height="405">
+<img src="../../images/Node_Flex.png" width="445" height="405"> <img src="../../images/Node_Flex_Full_v2b.png" width="445" height="405">
 
                           V1                                                                   V1b
 
