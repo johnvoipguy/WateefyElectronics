@@ -1,4 +1,7 @@
-<center><img src="../../images/Node_Flex.png" width="485" height="445"></center>
+<center><img src="../../images/Node_Flex.png" width="485" height="445"></center>  <img src="../../images/Node_Flex_Full_v2b.png" width="485" height="445">
+
+                          V1                                                                   V1b
+
 # NODE Flex
 
 ### 8-Channel Addressable LED Controller · Universal Module Carrier
