@@ -106,4 +106,4 @@ Backbone gives you two ready-to-use I²C access points, both hardwired — no ju
  
 ## Something not working?
  
-See the **Troubleshooting** section of the full NODE Backbone Guide, or reach out through the support link printed on the board silkscreen. *(Placeholder — insert my support URL/QR destination here.)*
+See the **Troubleshooting** section of the full NODE Backbone Guide, or reach out through the support link printed on the board silkscreen. [Click here to report Issues:](https://github.com/johnvoipguy/WateefyElectronics/issues)
