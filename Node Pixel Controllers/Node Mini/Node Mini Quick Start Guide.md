@@ -92,4 +92,4 @@ Node Mini has an onboard ADS1115 (voltage monitor) and MCP23008 (I/O expander) o
 
 ## Something not working?
 
-See the **Troubleshooting** section of the full NODE Mini Guide, or reach out through the support link printed on the board silkscreen. *(Placeholder — insert support URL/QR destination here.)*
+See the **Troubleshooting** section of the full NODE Mini Guide, or reach out through the support link printed on the board silkscreen. [Click here to report Issues:](https://github.com/johnvoipguy/WateefyElectronics/issues)
