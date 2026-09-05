@@ -110,4 +110,4 @@ If you'd rather run your own external I²C sensors instead, don't use this heade
 
 ## Something not working?
 
-See the **Troubleshooting** section of the full NODE Flex Guide, or reach out through the support link printed on the board silkscreen. *(Placeholder — insert your real support URL/QR destination here.)*
+See the **Troubleshooting** section of the full NODE Flex Guide, or reach out through the support link printed on the board silkscreen. *(Placeholder — insert my support URL/QR destination here.)*
