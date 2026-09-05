@@ -1,4 +1,4 @@
-<img src="../../images/Node_Mini.png" width="445" height="405">       <img src="../../images/Node_Mini.png" width="445" height="405">
+<img src="../../images/Node_Mini.png" width="445" height="405">       <img src="../../images/Node Mini Full.png" width="445" height="405">
 
                           V1                                                                   V1b
 
