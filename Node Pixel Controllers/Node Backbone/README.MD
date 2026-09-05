@@ -1,4 +1,8 @@
-<img src="../../images/Node_Backbone.png" width="485" height="445">
+<img src="../../images/Node_Backbone.png" width="485" height="445"> <img src="../../images/Node_Backbone_v1b_full.png" width="445" height="405">
+
+                          V1                                                                   V1b
+
+
 <p align="center">
   <img src="/images/wled_logo_akemi.png">
   <a href="https://github.com/Aircoookie/WLED/releases"><img src="https://img.shields.io/github/release/Aircoookie/WLED.svg?style=flat-square"></a>
