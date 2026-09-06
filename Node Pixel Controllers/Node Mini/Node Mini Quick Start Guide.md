@@ -84,13 +84,13 @@ Node Mini includes a 4-port DMX output block, labeled near the RJ45-style jacks.
 - **For DMX (TX):** place the jumper on **J4**.
 - **For RDM:** leave **J4** unjumpered — instead, connect jumper wires from **GPIO7** and **GPIO8** to either **EN** or **RX**, depending on your WLED configuration.
 
-![DMX jack block](images/dmx_jack_image1.png)
+![DMX jack block](../../images/node_mini_dmx.png)
 
 ## Optional — Sensor/expansion header (I²C)
 
 Node Mini has an onboard ADS1115 (voltage monitor) and MCP23008 (I/O expander) on their own internal I²C bus, broken out to a small header marked **"SCL ADS/MCP"** / **"SDA ADS/MCP"**. This header does double duty — use it to enable ADS/MCP readings (fuse status, Vin, and 5V readings), or to tap in additional I²C sensors, depending on your project.
 
-![SCL/SDA ADS/MCP header](images/i2c_header_image1.png)
+![SCL/SDA ADS/MCP header](../../images/node_mini_headers_adc_i2c.png)
 
 ## Something not working?
 
