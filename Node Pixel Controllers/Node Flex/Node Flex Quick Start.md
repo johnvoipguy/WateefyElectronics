@@ -30,12 +30,12 @@ Welcome to your NODE Flex! Flex is the "universal" board in the family — it ac
 
 Find the terminal block marked **"5-48VDC Input."**
 
-- ![Input Terminal Vin/GND labels](images/input_term_image1.png)
+- ![Input Terminal Vin/GND labels](images/Input_Terminal_Front.png)
 - Before inserting any wire, back the terminal screws out enough that the clamp gate fully opens — if you try to force a wire into a closed gate you'll damage the terminal.
 - Insert your power supply's positive lead into the Vin opening and the negative lead into the GND opening, then tighten each screw down to clamp the wire firmly.
 - Do not power up yet.
 
-![Input Terminal with wires inserted](images/input_term_image2.png)
+![Input Terminal with wires inserted](images/Input_Terminal_Front_arrows.png)
 
 ## Step 2 — Seat your DevKit and map GPIOs to channels
 
