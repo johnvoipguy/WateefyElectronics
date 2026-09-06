@@ -110,7 +110,7 @@ Node Flex has an onboard ADS1115 (voltage monitor) and MCP23008 (I/O expander), 
 
 If you'd rather run your own external I²C sensors instead, don't use this header — jumper straight from your DevKit's own male header pins to your sensor.
 
-![MCP/ADS header](images/flex_mcp_ads_header_image1.png)
+![MCP/ADS header](../../images/flex_mcp_ads_header_image1.png)
 
 ## Something not working?
 
