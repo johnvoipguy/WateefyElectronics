@@ -15,7 +15,7 @@ Welcome to your NODE Mini! This guide gets you from box to lit-up pixels in abou
 - WS281x/SK6812/TM1814-style addressable LED strips or fixtures
 - Small Phillips or flathead screwdriver
 
-![Node Mini full board overview](images/mini_board_overview.png)
+![Node Mini full board overview](../../images/Node_Mini_Full.png)
 
 ## Safety first — read this before wiring anything
 
@@ -29,12 +29,12 @@ Welcome to your NODE Mini! This guide gets you from box to lit-up pixels in abou
 
 Find the terminal block marked **"5-48VDC Input."**
 
-- ![Input Terminal Vin/GND labels](images/input_term_image1.png)
+- ![Input Terminal Vin/GND labels](../../images/Input_Terminal_Front.png)
 - Before inserting any wire, back the terminal screws out enough that the clamp gate fully opens — if you try to force a wire into a closed gate you'll damage the terminal.
 - Insert your power supply's positive lead into the left (Vin) opening and the negative lead into the right (GND) opening, then tighten each screw down to clamp the wire firmly.
 - Do not power up yet.
 
-![Input Terminal with wires inserted](images/input_term_image2.png)
+![Input Terminal with wires inserted](../../images/Input_Terminal_Front_arrows.png)
 
 ## Step 2 — Mount your MCU
 
@@ -42,13 +42,13 @@ The XIAO ESP32-S3 seats into the two 7-pin sockets in the middle top of the boar
 
 *Board came complete? The MCU and level shifter are already installed — skip this step.*
 
-![XIAO ESP32-S3 seated in sockets](images/mcu_socket_image1.png)
+![XIAO ESP32-S3 seated in sockets](../../images/node_mini_headers.png)
 
 ## Step 3 — Wire your LED outputs
 
 Each of the 8 output channels has its own 3-pole connector (V+ / DATA / GND) near the edge of the board. Connect your pixel strip or fixture's power, data, and ground leads to the channel you want to use. Each channel is individually fused — a fault on one channel won't take down the others.
 
-![Output connector with wires landed](images/output_connector_image1.png)
+![Output connector with wires landed](../../images/ouput_terminals.png)
 
 ## Step 4 — Power up and check the indicator LEDs
 
@@ -62,7 +62,9 @@ Apply power. You should see, in order:
 
 If all three are lit correctly (green Polarity, Fuse OK, 5V OK), your board is alive and ready to be configured over USB/WiFi through your MCU firmware of choice (WLED, etc.).
 
-![Polarity/Fuse OK/5V OK LED cluster](images/led_indicator_image1.png)
+![Polarity Indicator LEds](../../images/Polarity_LEDs.png)
+
+![Fuse OK/5V OK LED cluster](images/led_indicator_image1.png)
 
 ## Jumper Reference (J1–J4)
 
