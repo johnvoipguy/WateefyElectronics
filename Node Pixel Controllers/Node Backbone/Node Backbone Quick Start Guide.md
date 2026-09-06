@@ -36,7 +36,6 @@ Find the terminal block marked **"5-48VDC Input."** This feeds your LED pixels �
 - Before inserting any wire, back the terminal screws out enough that the clamp gate fully opens — if you try to force a wire into a closed gate you'll damage the terminal.
 - Insert your power supply's positive lead into the Vin opening and the negative lead into the GND opening, then tighten each screw down to clamp the wire firmly.
 - Do not power up yet.
-![Input Terminal with wires inserted](../../images/Input_Terminal_Front.png)
  
 ## Step 2 — Mount your MCU
  
