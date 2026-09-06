@@ -76,6 +76,8 @@ Apply power. You should see, in order:
 
 If all three are lit correctly (green Polarity, Fuse OK, +5V OK), your board is alive and ready to be configured over USB/WiFi through your DevKit's firmware.
 
+![Polarity OK LEDs](../../images/Polarity_LEDs.png)
+
 ![Polarity/Fuse OK/+5V OK LED cluster](images/flex_led_indicator_image1.png)
 
 ## Jumper Reference
@@ -99,7 +101,7 @@ Node Flex includes a DMX output block, labeled **"RDM/TX"** near the RJ45-style 
 - **For DMX TX only:** jumper your DevKit's **3.3V/VCC** to the **TX only** block's **3.3v** pin, and your DevKit's configured DMX TX GPIO to the **TX only** block's **TX** pin.
 - **For RDM:** jumper wires from your configured RX, TX, and EN GPIOs to the corresponding **RX** / **TX** / **EN** pins.
 
-![DMX jack block](images/flex_dmx_jack_image1.png)
+![DMX jack block](../../images/Node_Flex_DMX.png)
 
 ## Optional — Sensor/expansion header (I²C)
 
