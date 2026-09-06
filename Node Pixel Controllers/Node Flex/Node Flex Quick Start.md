@@ -47,7 +47,7 @@ This is the step unique to Flex — there's no fixed MCU, so you decide which of
 - Unused channels don't need a jumper — pull-down resistors hold them at a known logic low automatically, so nothing floats.
 - **Before you finalize your GPIO choices:** check your specific module's datasheet to confirm none of the GPIOs you're assigning are boot-strapping, flash, or PSRAM pins — this varies by module and isn't something the board can protect you from.
 
-![DevKit seated in header rows](images/flex_devkit_seated_image1.png)
+![DevKit seated in header rows](../../images/Node_Flex_headers.png)
 
 ![Level Shifter Pinout header with jumper wires](images/flex_ls_jumpers_image1.png)
 
@@ -62,7 +62,7 @@ Your DevKit still needs its own power feed from the board.
 
 Each of the 8 output channels has its own 3-pole connector (V+ / DATA / GND) near the edge of the board. Connect your pixel strip or fixture's power, data, and ground leads to the channel whose LS pin you jumpered in Step 2. Each channel is individually fused — a fault on one channel won't take down the others.
 
-![Output connector with wires landed](images/output_connector_image1.png)
+![Output connector with wires landed](../../images/ouput_terminals.png)
 
 ## Step 4 — Power up and check the indicator LEDs
 
