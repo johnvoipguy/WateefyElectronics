@@ -16,7 +16,7 @@ Welcome to your NODE Flex! Flex is the "universal" board in the family — it ac
 - Small Phillips or flathead screwdriver
 - Jumper wires — 10cm (4") female-to-female multicolored Dupont/breadboard jumper ribbon cables (longer works too, but 10cm covers every pin-to-pin jump on this board) — for mapping your DevKit's GPIOs to channels (see Step 2)
 
-![Node Flex full board overview](images/flex_board_overview.png)
+![Node Flex full board overview](images/Node_Flex_headers.png)
 
 ## Safety first — read this before wiring anything
 
