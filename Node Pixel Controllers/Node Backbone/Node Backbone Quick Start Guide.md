@@ -71,6 +71,8 @@ With your pixel supply and Ethernet/PoE both connected, you should see:
  
 If all three are lit correctly (green Polarity, Fuse OK, 3.3V OK), your board is alive and ready to be configured over the network through your MCU firmware of choice (WLED, etc.).
  
+![Polarity indicators](../../images/Polarity_LEDs.png)
+
 ![Polarity/Fuse OK/3.3V OK LED cluster](images/backbone_led_indicator_image1.png)
  
 ## Fixed Pin Reference (for firmware configuration)
