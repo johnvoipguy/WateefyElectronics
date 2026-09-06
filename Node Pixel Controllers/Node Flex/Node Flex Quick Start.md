@@ -74,10 +74,11 @@ Apply power. You should see, in order:
 | **Fuse OK** | The main input fuse is intact and the distribution bus is live. If this is dark, check the main fuse. |
 | **+5V OK** | The onboard 5V logic regulator is up and running, powering your DevKit and buffers. |
 
-If all three are lit correctly (green Polarity, Fuse OK, +5V OK), your board is alive and ready to be configured over USB/WiFi through your DevKit's firmware.
+If all three are lit correctly (Polarity Light is green), If the RVR LED is RED Polarity is reversed, swap V+ and V-.
 
 ![Polarity OK LEDs](../../images/Polarity_LEDs.png)
 
+If all three are lit correctly (Fuse OK, +5V OK), your board is alive and ready to be configured over USB/WiFi through your DevKit's firmware.
 ![Polarity/Fuse OK/+5V OK LED cluster](images/flex_led_indicator_image1.png)
 
 ## Jumper Reference
