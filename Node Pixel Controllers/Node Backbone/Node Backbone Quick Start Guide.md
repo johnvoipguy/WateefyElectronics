@@ -17,7 +17,7 @@ Welcome to your NODE Backbone! Backbone is the PoE/Ethernet variant — your con
 - Small Phillips or flathead screwdriver
 No jumper wires needed on this board — DMX, the fuse-status/voltage monitor, and the STEMMA QT port are all hardwired.
  
-![Node Backbone full board overview](images/backbone_board_overview.png)
+![Node Backbone full board overview](../../images/Node_Backbone_v1b_full.png)
  
 ## Safety first — read this before wiring anything
  
@@ -32,11 +32,11 @@ No jumper wires needed on this board — DMX, the fuse-status/voltage monitor, a
  
 Find the terminal block marked **"5-48VDC Input."** This feeds your LED pixels — it does not power the controller itself (that's Step 3).
  
-- ![Input Terminal Vin/GND labels](images/input_term_image1.png)
+- ![Input Terminal Vin/GND labels](../../images/Input_Terminal_Front.png)
 - Before inserting any wire, back the terminal screws out enough that the clamp gate fully opens — if you try to force a wire into a closed gate you'll damage the terminal.
 - Insert your power supply's positive lead into the Vin opening and the negative lead into the GND opening, then tighten each screw down to clamp the wire firmly.
 - Do not power up yet.
-![Input Terminal with wires inserted](images/input_term_image2.png)
+![Input Terminal with wires inserted](../../images/Input_Terminal_Front_arrows.png)
  
 ## Step 2 — Mount your MCU
  
@@ -44,7 +44,7 @@ The Waveshare ESP32-S3-ETH-POE module seats into its socket. It's field-replacea
  
 *Board came complete? The MCU and level shifter are already installed — skip this step.*
  
-![Waveshare ESP32-S3-ETH-POE seated in socket](images/backbone_mcu_socket_image1.png)
+![Waveshare ESP32-S3-ETH-POE seated in socket](../../images/backbone_mcu_socket_image1.png)
  
 ## Step 3 — Connect Ethernet / PoE
  
@@ -58,7 +58,7 @@ The Waveshare ESP32-S3-ETH-POE module seats into its socket. It's field-replacea
  
 Each of the 8 output channels has its own 3-pole connector (V+ / DATA / GND) near the edge of the board. Connect your pixel strip or fixture's power, data, and ground leads to the channel you want to use. Each channel is individually fused — a fault on one channel won't take down the others.
  
-![Output connector with wires landed](images/output_connector_image1.png)
+![Output connector with wires landed](../../images/ouput_terminals.png)
  
 ## Step 5 — Power up and check the indicator LEDs
  
@@ -94,7 +94,7 @@ Node Backbone's DMX is hardwired — just plug your DMX cable into the RJ45-styl
  
 **Reminder:** this jack is DMX only — don't confuse it with the Ethernet/PoE jack (see Safety, above).
  
-![DMX jack](images/backbone_dmx_jack_image1.png)
+![DMX jack](../../images/backbone_dmx_jack_image1.png)
  
 ## Optional — Sensor/expansion (I²C)
  
