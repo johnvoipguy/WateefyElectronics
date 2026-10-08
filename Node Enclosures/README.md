@@ -40,8 +40,8 @@ store, either bundled with a controller or on their own for anyone without a pri
   the lid, and 4 mm for the NODE controller and the PSU rails.
 - **Lid seal:** the top edge of the shell is stepped. A raised inner lip, about 1 mm wide and
   1.5 mm tall, runs inside the ring of screw holes and seats into a matching groove in the lid.
-  The screw holes sit outside that lip, so water that gets in around the lid screws, or under a
-  lid that isn't fully tightened, is kept out of the inside of the enclosure.
+  The screw holes sit outside that lip, so water coming through a screw hole (loose, stripped
+  or missing screw) can't get past the lid joint into the enclosure.
 - **Glands:** 1 × PG9 for power in, 8 × PG7 for the pixel runs, one gland per channel.
 - **Fan:** mounting holes for the fan are designed into the print: 3010 on the Aegis, 3010 or 4010
   on the Bastion and Citadel. The fan itself is optional, 5 V, and sits behind a printed vent
