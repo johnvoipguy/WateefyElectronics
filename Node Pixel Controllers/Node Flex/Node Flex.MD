@@ -132,7 +132,7 @@ Nobody else in this class can claim all three.
 | Fuse replacement | Mini blade — auto parts store, gas station, variety pack | Cartridge in a surface-mount holder — order online | ATO blade — auto parts store |
 | Audio-reactive / mic support | DIY — headers fitted, spare GPIO available | DIY — wire an INMP441 to the H1 header (documented) | **Analog audio input broken out** |
 | Temperature sensor support | DIY — headers fitted, spare GPIO available | DIY — add header, DS18B20 and 4.7 kΩ (documented) | **Optional onboard footprint** |
-| Enclosure | *Coming soon* | None — 3D-print mounts published | None — bare board |
+| Enclosure | Free 3D-printable [NODE Enclosures](../../Node%20Enclosures/), with or without an integrated PSU | None — 3D-print mounts published | None — bare board |
 | Board size | 123 × 138 mm — *the cost of blade holders, a DIP socket and terminal clearance* | ~110 × 70 mm | ~100 × 50 mm |
 | Firmware | WLED / ESPHome / ESPixelStick — module-level, not board-level | Same | Same |
 | Firmware image | Pre-built image supplied per module | Pre-built image supplied; ESPixelStick needs the vendor hardware profile | Stock WLED builds |
@@ -156,7 +156,7 @@ Nobody else in this class can claim all three.
 | Model | NODE Flex (V1a) |
 | Configuration | Assembled, tested, conformal coated |
 | Included | Controller board, level shifter installed, fuses installed |
-| Not included | **Enclosure**, ESP32 DevKit module, jumper shunts, 3-pin plug connectors, blade fuses beyond those fitted, power supply |
+| Not included | Enclosure (free to print or sold separately, see [NODE Enclosures](../../Node%20Enclosures/)), ESP32 DevKit module, jumper shunts, 3-pin plug connectors, blade fuses beyond those fitted, power supply |
 | Availability | **Not currently offered for sale.** The present build is a validation run — first-article hardware for bring-up, characterisation and field trial. |
 | Sale status | Planned for the next revision |
 | Price | *TBD* |
@@ -239,7 +239,7 @@ Nobody else in this class can claim all three.
 | Soldermask | Blue |
 | Mounting | 4 × corner mounting holes, 3 mm |
 | Mounting hole spacing | 107.9 × 103.8 mm |
-| Enclosure | *Coming soon* — enclosures exist for the V0.1 prototype; being updated to the current board dimensions |
+| Enclosure | [NODE Enclosures](../../Node%20Enclosures/): Aegis (board only), Bastion 350, Citadel 600 (board + PSU) |
 | Net weight | *TBD — measure at first article* |
 | Conformal coating | Applied after assembly; connectors, sockets, fuse clips, and switches masked |
 

@@ -99,6 +99,7 @@ Specifications are maintained per board, not in this README.
 | [NODE Mini](./Node%20Pixel%20Controllers/Node%20Mini) | Variant specification — XIAO ESP32-S3 socket, onboard logic rail, GPIO map |
 | [NODE Flex](./Node%20Pixel%20Controllers/Node%20Flex) | Variant specification — universal DevKit carrier, jumper channel mapping, module compatibility |
 | [NODE Backbone](./Node%20Pixel%20Controllers/Node%20Backbone) | Variant specification — Ethernet and PoE, W5500 network stack, isolated logic domain |
+| [NODE Enclosures](./Node%20Enclosures/) | Free 3D-printable enclosures: Aegis, Bastion 350, Citadel 600 |
 | [Datasheets](./Datasheets) | Product datasheets in PDF |
 
 Read the Platform Reference for how the board protects your pixels. Read the variant specification for the differences between boards.
@@ -126,6 +127,7 @@ Flashing requires `esptool`. See the [firmware directory](./Firmware) for the pr
 ```
 Datasheets/               Product datasheets (PDF)
 Firmware/                 Pre-built WLED images and flashing instructions
+Node Enclosures/          3D-printable enclosures (3MF), photos and specs
 Node Pixel Controllers/   Platform reference and per-board specifications
 images/                   Product and documentation imagery
 releases/                 Release notes and mirrors
@@ -159,7 +161,7 @@ Stated plainly rather than buried:
 
 - **Not automotive qualified.** Protection targets transients credible in a residential or light-commercial installation. Not tested to ISO 7637 load-dump profiles, and not intended for vehicle use.
 - **Over-voltage beyond specification is not survivable.** A supply above the rated input range will conduct the input TVS and open the main fuse. This is sacrificial by design — the board is protected, and the TVS and fuse are treated as consumables.
-- **No enclosure is included, and none is planned.** Four corner mounting holes are provided; the boards are intended to mount in whatever the installation already uses.
+- **No enclosure is included with the board.** Four corner mounting holes are provided for whatever the installation already uses, or print one of the free [NODE Enclosures](./Node%20Enclosures/).
 - **The ecosystem is new.** Established alternatives exist with years of community documentation behind them. Each board's specification names them directly and states plainly where they are the better choice.
 
 ---
@@ -182,6 +184,7 @@ Specifications are maintained per board, not in this README.
 | [NODE Mini](./Node%20Pixel%20Controllers/Node%20Mini) | Variant specification — XIAO ESP32-S3 socket, onboard logic rail, GPIO map |
 | [NODE Flex](./Node%20Pixel%20Controllers/Node%20Flex) | Variant specification — universal DevKit carrier, jumper channel mapping, module compatibility |
 | [NODE Backbone](./Node%20Pixel%20Controllers/Node%20Backbone) | Variant specification — Ethernet and PoE, W5500 network stack, isolated logic domain |
+| [NODE Enclosures](./Node%20Enclosures/) | Free 3D-printable enclosures: Aegis, Bastion 350, Citadel 600 |
 | [Datasheets](./Datasheets) | Product datasheets in PDF |
 
 Read the Platform Reference for how the board protects your pixels. Read the variant specification for the differences between boards.
@@ -209,6 +212,7 @@ Flashing requires `esptool`. See the [firmware directory](./Firmware) for the pr
 ```
 Datasheets/               Product datasheets (PDF)
 Firmware/                 Pre-built WLED images and flashing instructions
+Node Enclosures/          3D-printable enclosures (3MF), photos and specs
 Node Pixel Controllers/   Platform reference and per-board specifications
 images/                   Product and documentation imagery
 releases/                 Release notes and mirrors
@@ -242,7 +246,7 @@ Stated plainly rather than buried:
 
 - **Not automotive qualified.** Protection targets transients credible in a residential or light-commercial installation. Not tested to ISO 7637 load-dump profiles, and not intended for vehicle use.
 - **Over-voltage beyond specification is not survivable.** A supply above the rated input range will conduct the input TVS and open the main fuse. This is sacrificial by design — the board is protected, and the TVS and fuse are treated as consumables.
-- **No enclosure is included, and none is planned.** Four corner mounting holes are provided; the boards are intended to mount in whatever the installation already uses.
+- **No enclosure is included with the board.** Four corner mounting holes are provided for whatever the installation already uses, or print one of the free [NODE Enclosures](./Node%20Enclosures/).
 - **The ecosystem is new.** Established alternatives exist with years of community documentation behind them. Each board's specification names them directly and states plainly where they are the better choice.
 
 ---

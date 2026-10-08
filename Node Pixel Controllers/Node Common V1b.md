@@ -115,7 +115,9 @@ At the **36 V nominal** rating no part on the plane exceeds 60 % of its own limi
 
 ## Mounting & Enclosure
 
-**No enclosure is included, and none is planned.** This is the norm in this segment — bare board, mounted in whatever the installation already uses: a CG1500, a DIN rail, a weatherproof box, a plywood backer.
+**No enclosure is included with the board, but three are available.** The [NODE Enclosures](../Node%20Enclosures/) are free to 3D-print from this repository, or can be bought printed from the store, on their own or bundled with a controller. **NODE Aegis** holds the board alone. **NODE Bastion 350** and **NODE Citadel 600** hold the board together with a Mean Well LRS-350 or LRS-600 supply. All three have a gland wall for power in and eight pixel runs, a sealed lid joint, and printed mounts for an optional 5 V fan.
+
+The board still mounts just as well in whatever the installation already uses: a CG1500, a DIN rail, a weatherproof box, a plywood backer.
 
 What NODE adds instead is **conformal coating, applied at the fabrication facility** with connectors, sockets, fuse clips, and switches masked. Competing boards in this class ship uncoated. A coated board in a vented enclosure tolerates condensation and humidity in a way a bare board does not, which matters for the seasonal outdoor installs this was built for.
 

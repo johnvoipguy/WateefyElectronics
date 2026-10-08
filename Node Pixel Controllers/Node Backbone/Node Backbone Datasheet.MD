@@ -130,7 +130,7 @@ Athom's WLED range is deliberately excluded: single-strip and PWM controllers ai
 | Fuse replacement | Mini blade — auto parts store, gas station, variety pack | Cartridge in a surface-mount holder — order online | ATO blade — auto parts store |
 | Audio-reactive / mic support | DIY — headers fitted, spare GPIO available | DIY — wire an INMP441 to the H1 header (documented) | Analog audio input broken out |
 | Temperature sensor support | DIY — headers fitted, spare GPIO available | DIY — add header, DS18B20 and 4.7 kΩ (documented) | Optional onboard footprint |
-| Enclosure | Coming soon | None — 3D-print mounts published | None — bare board |
+| Enclosure | Free 3D-printable [NODE Enclosures](../../Node%20Enclosures/), with or without an integrated PSU | None — 3D-print mounts published | None — bare board |
 | Board size | 123 × 129 mm — the cost of blade holders, a DIP socket and terminal clearance | ~110 × 70 mm | ~100 × 50 mm |
 | Firmware | WLED / ESPHome / ESPixelStick — module-level, not board-level | Same | Same |
 | Firmware image | Pre-built Ethernet image supplied | Pre-built image supplied; ESPixelStick needs the vendor hardware profile | Stock WLED builds |
@@ -149,14 +149,16 @@ Athom's WLED range is deliberately excluded: single-strip and PWM controllers ai
 
 ## Mounting & Enclosure
 
-**No enclosure is included, and none is planned.** This is the norm in this segment — bare board, mounted in whatever the installation already uses: a CG1500, a DIN rail, a weatherproof box, a plywood backer.
+**No enclosure is included with the board, but three are available.** The [NODE Enclosures](../../Node%20Enclosures/) are free to 3D-print from this repository, or can be bought printed from the store, on their own or bundled with a controller. **NODE Aegis** holds the board alone. **NODE Bastion 350** and **NODE Citadel 600** hold the board together with a Mean Well LRS-350 or LRS-600 supply. All three have a gland wall for power in and eight pixel runs, a sealed lid joint, and printed mounts for an optional 5 V fan.
+
+The board still mounts just as well in whatever the installation already uses: a CG1500, a DIN rail, a weatherproof box, a plywood backer.
 
 What NODE adds instead is **conformal coating, applied at the fabrication facility** with connectors, sockets, fuse clips, and switches masked. Competing boards in this class ship uncoated. A coated board in a vented enclosure tolerates condensation and humidity in a way a bare board does not, which matters for the seasonal outdoor installs this was built for.
 
 Four corner mounting holes are provided. *Hole spacing and a downloadable mount STL: to be published at first article.*
 
 
-**Enclosure note specific to this variant:** the Ethernet jack requires clearance and cable strain relief at the enclosure wall. Plan the entry before drilling.
+**Enclosure note specific to this variant:** the Ethernet jack requires clearance and cable strain relief at the enclosure wall. Plan the entry before drilling. The NODE Enclosures leave the Ethernet hole undrilled for this reason; drill it for an M25 gland, or whatever size your cable and jack need.
 
 ---
 
@@ -178,7 +180,7 @@ Four corner mounting holes are provided. *Hole spacing and a downloadable mount 
 | Model | NODE Backbone |
 | Configuration | Assembled, tested, conformal coated |
 | Included | Controller board, level shifter installed, fuses installed |
-| Not included | Enclosure, Waveshare ESP32-S3-ETH-POE module, 3-pin plug connectors, blade fuses beyond those fitted, pixel supply, Ethernet cable |
+| Not included | Enclosure (free to print or sold separately, see [NODE Enclosures](../../Node%20Enclosures/)), Waveshare ESP32-S3-ETH-POE module, 3-pin plug connectors, blade fuses beyond those fitted, pixel supply, Ethernet cable |
 | Availability | Pre-release. The present build is a validation run — first-article hardware for bring-up, characterisation and field trial. |
 | Price | TBD |
 | Lead time | TBD |
@@ -308,7 +310,7 @@ At the **36 V nominal** rating no part on the plane exceeds 60 % of its own limi
 | Soldermask | Blue |
 | Mounting | 4 × corner mounting holes, 3 mm |
 | Mounting hole spacing | 107.9 × 103.8 mm |
-| Enclosure | Coming soon |
+| Enclosure | Free 3D-printable [NODE Enclosures](../../Node%20Enclosures/), with or without an integrated PSU |
 | Net weight | TBD — measure at first article |
 | Conformal coating | Applied at the fab; connectors, sockets, fuse clips, and switches masked |
 
