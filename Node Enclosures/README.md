@@ -75,6 +75,7 @@ printable rails with the NODE board above it.
   <img src="./Bastion%20350/images/bastion-350-loaded.png" alt="NODE Bastion 350 with controller and PSU" width="32%">
   <img src="./Bastion%20350/images/bastion-350-bare-lid.png" alt="NODE Bastion 350 shell, PSU rails and lid" width="32%">
   <img src="./Bastion%20350/images/bastion-350-closed.png" alt="NODE Bastion 350, lid on" width="32%">
+  <img src="./Bastion%20350/images/bastion-350-loaded-lid.png" alt="NODE Bastion 350 loaded, lid alongside" width="32%">
 </p>
 
 | | |
@@ -91,8 +92,9 @@ printable rails with the NODE board above it.
 The large one. Same footprint as the Bastion, but taller to clear the **Mean Well LRS-600**.
 
 <p align="center">
-  <img src="./Citadel%20600/images/citadel-600-loaded.png" alt="NODE Citadel 600 with controller and PSU" width="45%">
-  <img src="./Citadel%20600/images/citadel-600-bare.png" alt="NODE Citadel 600, empty shell" width="45%">
+  <img src="./Citadel%20600/images/citadel-600-loaded.png" alt="NODE Citadel 600 with controller and PSU" width="32%">
+  <img src="./Citadel%20600/images/citadel-600-bare.png" alt="NODE Citadel 600, empty shell" width="32%">
+  <img src="./Citadel%20600/images/citadel-600-bare-top.png" alt="NODE Citadel 600, top view with PSU rails" width="32%">
 </p>
 
 | | |
