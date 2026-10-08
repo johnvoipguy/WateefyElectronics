@@ -49,6 +49,12 @@ store, either bundled with a controller or on their own for anyone without a pri
 - **Ethernet (NODE Backbone, or NODE Flex with an Olimex or ETH01 module):** no Ethernet hole is pre-cut. Drill one for an M25 gland, or
   whatever size your cable and jack need.
 
+<p align="center">
+  <img src="./images/lid-seal-groove.png" alt="Lid underside: groove that receives the shell's inner lip" width="45%">
+  <img src="./images/lid-seal-lip.png" alt="Shell top edge: raised inner lip inside the screw holes" width="45%">
+</p>
+<p align="center"><em>Lid seal. Left: groove in the lid. Right: inner lip on the shell, inside the screw holes.</em></p>
+
 ---
 
 ## NODE Aegis
