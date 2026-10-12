@@ -19,6 +19,10 @@
 
 A fast and feature-rich implementation of an ESP8266/ESP32 webserver to control NeoPixel (WS2812B, WS2811, SK6812) LEDs or also SPI based chipsets like the WS2801 and APA102!
 
+## 📡 AP Bridge Firmware (BETA / IN TESTING)
+
+AP bridging turns the Backbone's WiFi access point into an extension of its wired LAN, so wireless NODE boards join it and act like plugged-in LAN devices. [Details and setup](../../Firmware/Node%20Backbone%20AP%20Bridge/README.md)
+
 ## 🔌 Waveshare ESP32-S3-ETH Custom Build
 
 This is a custom WLED build for the **Waveshare ESP32-S3-ETH** board with W5500 Ethernet support.
@@ -168,10 +172,6 @@ If you want to add custom functionality (temperature sensors, extra I/O, microph
 - ✅ Access web interface via **Ethernet IP only** when cable is connected
 - ✅ **Use Ethernet for E1.31/Art-Net/DDP** — low-latency, deterministic streaming (recommended over WiFi)
 - ✅ Unplug Ethernet cable to re-enable WiFi (e.g., for wireless troubleshooting)
-
-### 📡 AP Bridge Firmware (BETA / IN TESTING)
-
-AP bridging turns the Backbone's WiFi access point into an extension of its wired LAN, so wireless NODE boards join it and act like plugged-in LAN devices. [Details and setup](../../Firmware/Node%20Backbone%20AP%20Bridge/README.md)
 
 ## ⚙️ WLED Features
 
