@@ -23,7 +23,7 @@ A fast and feature-rich implementation of an ESP8266/ESP32 webserver to control 
 
 | Variant | What it does |
 |---|---|
-| **📡 AP Bridge Firmware (BETA / IN TESTING)** | AP bridging turns the Backbone's WiFi access point into an extension of its wired LAN, so wireless NODE boards join it and act like plugged-in LAN devices. [Details and setup](../../Firmware/Node%20Backbone%20AP%20Bridge/README.md) |
+| **📡 AP Bridge Firmware (BETA / IN TESTING)** | AP bridging turns the Backbone's WiFi access point into an extension of its wired LAN, so wireless NODE boards join it and act like plugged-in LAN devices. Flashing and hardware setup: same as Standard below. [Details and setup](../../Firmware/Node%20Backbone%20AP%20Bridge/README.md) |
 | **🔌 Standard Firmware** | Wired Ethernet controller. WiFi is setup/backup only and switches off when Ethernet is connected. Walkthrough below. |
 
 ## 🔌 Waveshare ESP32-S3-ETH Custom Build
