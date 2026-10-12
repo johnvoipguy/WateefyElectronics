@@ -47,8 +47,28 @@ WiFi.
 - **Use DDP, unicast,** to each wireless board. This is the recommended setup.
 - **E1.31/sACN and Art-Net work but are not recommended over WiFi.** Multicast and broadcast traffic
   from the wired LAN is flooded onto the access point and eats airtime the wireless boards need.
-- **Wired-side throughput is limited by the Backbone's SPI-attached Ethernet controller.** Pixel
-  budget numbers will be published after bench testing.
+- **Wired-side throughput is limited by the Backbone's SPI-attached Ethernet controller.**
+
+### Throughput (theoretical, NOT validated)
+
+> ⚠️ **These are design targets only. They have not been bench tested.** Real numbers will
+> replace them after bench testing, and they may come in lower.
+
+The Backbone and every wireless board share one network budget, like a power supply's watt
+budget.
+
+**Backbone network budget:** up to 400,000 pixel-frames/sec (DDP)
+
+Add up pixels × FPS for the Backbone plus every wireless board, and stay under the budget.
+
+| FPS | Total pixels (Backbone + wireless) |
+|---|---|
+| 40 | up to ~10,000 |
+| 30 | up to ~13,000 |
+| 20 | up to ~20,000 |
+
+Up to 3 wireless boards per Backbone; need more, add a Backbone. Keep wireless boards within about
+10 ft (3 m) line of sight of the Backbone.
 
 ## Configure it
 
