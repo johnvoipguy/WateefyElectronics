@@ -169,6 +169,10 @@ If you want to add custom functionality (temperature sensors, extra I/O, microph
 - ✅ **Use Ethernet for E1.31/Art-Net/DDP** — low-latency, deterministic streaming (recommended over WiFi)
 - ✅ Unplug Ethernet cable to re-enable WiFi (e.g., for wireless troubleshooting)
 
+### 📡 AP Bridge Firmware (BETA / IN TESTING)
+
+A separate Backbone build that bridges a WiFi access point straight onto the wired LAN, so nearby wireless NODE Mini/Flex boards join it and show up as ordinary LAN devices. What it is, how it works and how to configure it: **[Node Backbone AP Bridge](../../Firmware/Node%20Backbone%20AP%20Bridge/README.md)**.
+
 ## ⚙️ WLED Features
 
 This board runs **WLED** — open-source LED controller firmware. Key features:

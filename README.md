@@ -112,7 +112,6 @@ Pre-built WLED images, configured for each board's GPIO map.
 
 - [Node Mini (XIAO)](./Firmware/Node%20Mini/README.md)
 - [Node Backbone (Waveshare)](./Firmware/Node%20Backbone/README.md)
-- [Node Backbone AP Bridge](./Firmware/Node%20Backbone%20AP%20Bridge/README.md) **(BETA / IN TESTING)**: bridges a WiFi access point onto the Backbone's wired LAN for wireless Mini/Flex boards
 - [All mirrored releases](https://github.com/johnvoipguy/WateefyElectronics/releases)
 
 Images are built and maintained per board — Backbone needs its own Ethernet build, and the XIAO runs a modified build to match the Mini's GPIO map. Flash what is published here rather than a generic release.
@@ -173,7 +172,6 @@ Use this quick selector:
 
 - **Node Mini (XIAO)** → [Go to Mini downloads](./Firmware/Node%20Mini/README.md)
 - **Node Backbone (Waveshare)** → [Go to Backbone downloads](./Firmware/Node%20Backbone/README.md)
-- **Node Backbone AP Bridge (BETA)** → [What it is and how to set it up](./Firmware/Node%20Backbone%20AP%20Bridge/README.md)
 
 Or browse all mirrored releases directly:  
 https://github.com/johnvoipguy/WateefyElectronics/releases
