@@ -19,9 +19,12 @@
 
 A fast and feature-rich implementation of an ESP8266/ESP32 webserver to control NeoPixel (WS2812B, WS2811, SK6812) LEDs or also SPI based chipsets like the WS2801 and APA102!
 
-## 📡 AP Bridge Firmware (BETA / IN TESTING)
+## 🧩 Firmware Variants
 
-AP bridging turns the Backbone's WiFi access point into an extension of its wired LAN, so wireless NODE boards join it and act like plugged-in LAN devices. [Details and setup](../../Firmware/Node%20Backbone%20AP%20Bridge/README.md)
+| Variant | What it does |
+|---|---|
+| **📡 AP Bridge Firmware (BETA / IN TESTING)** | AP bridging turns the Backbone's WiFi access point into an extension of its wired LAN, so wireless NODE boards join it and act like plugged-in LAN devices. [Details and setup](../../Firmware/Node%20Backbone%20AP%20Bridge/README.md) |
+| **🔌 Standard Firmware** | Wired Ethernet controller. WiFi is setup/backup only and switches off when Ethernet is connected. [Walkthrough below](#-waveshare-esp32-s3-eth-custom-build) |
 
 ## 🔌 Waveshare ESP32-S3-ETH Custom Build
 
