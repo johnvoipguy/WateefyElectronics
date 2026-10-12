@@ -57,15 +57,18 @@ WiFi.
 The Backbone and every wireless board share one network budget, like a power supply's watt
 budget.
 
-**Backbone network budget:** up to 400,000 pixel-frames/sec (DDP)
+**Backbone network budget:** up to 300,000 pixel-frames/sec (DDP, RGB)
+
+Math: 8 Mbps usable wire rate ÷ 3 bytes per RGB pixel, after DDP/UDP/IP/Ethernet packet
+overhead (~5%), ≈ 316,000, rounded down to 300,000. RGBW pixels are 4 bytes, so about 225,000.
 
 Add up pixels × FPS for the Backbone plus every wireless board, and stay under the budget.
 
 | FPS | Total pixels (Backbone + wireless) |
 |---|---|
-| 40 | up to ~10,000 |
-| 30 | up to ~13,000 |
-| 20 | up to ~20,000 |
+| 40 | up to ~7,500 |
+| 30 | up to ~10,000 |
+| 20 | up to ~15,000 |
 
 Up to 3 wireless boards per Backbone; need more, add a Backbone. Keep wireless boards within about
 10 ft (3 m) line of sight of the Backbone.
